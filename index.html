@@ -67,11 +67,11 @@
       <div class="titleblock">
         <div class="crumb" id="crumbLabel">LANÇAMENTO</div>
         <h1 class="pagetitle" id="pageTitle">Registrar entrada ou saída de fardamento</h1>
+        <div class="clock" id="clock"></div>
       </div>
       <div class="headeractions">
-        <div class="clock" id="clock"></div>
         <div class="search-wrap" id="searchWrap">
-          <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M17 17l-4-4"/></svg>
+          <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="6"/><path d="M17.5 17.5l-4.3-4.3"/></svg>
           <input type="text" class="search" id="headerSearch" placeholder="Buscar por item ou colaborador">
         </div>
         <button class="btn-pill-primary" id="btnHeaderAction">Registrar movimentação</button>
@@ -351,6 +351,21 @@
           <h2>Preferências de exibição</h2>
           <div class="desc">Ajustes de como o painel é mostrado nesta sessão do navegador — não afetam os dados salvos.</div>
           <div class="grid grid-2">
+            <div class="field">
+              <label>Moeda padrão</label>
+              <select id="cfgMoeda">
+                <option value="BRL">R$ Real brasileiro</option>
+                <option value="USD">US$ Dólar americano</option>
+                <option value="EUR">€ Euro</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Formato de data</label>
+              <select id="cfgFormatoData">
+                <option value="DMY">DD/MM/AAAA</option>
+                <option value="MDY">MM/DD/AAAA</option>
+              </select>
+            </div>
             <div class="field">
               <label>Densidade da tabela</label>
               <select id="cfgDensidade">

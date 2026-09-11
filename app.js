@@ -228,9 +228,11 @@
     `).join('') || '<div class="desc">Nenhum item em estado crítico agora.</div>';
   }
 
+  let configPref = { moeda: 'BRL', formatoData: 'DMY' };
+
   function formatarData(iso){
     const [y, m, d] = iso.split('-');
-    return `${d}/${m}/${y}`;
+    return configPref.formatoData === 'MDY' ? `${m}/${d}/${y}` : `${d}/${m}/${y}`;
   }
 
   function renderHistorico(){
@@ -415,7 +417,9 @@
   }
 
   function formatarReais(valor){
-    return valor.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+    const num = valor.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+    const simbolo = configPref.moeda === 'USD' ? 'US$' : configPref.moeda === 'EUR' ? '€' : 'R$';
+    return `${simbolo} ${num}`;
   }
 
   function popularFiltrosFinanceiro(){
@@ -474,11 +478,11 @@
     let subtotalCentro = 0;
 
     function fecharCentro(){
-      html += `<tr class="finsubtotal"><td colspan="5">Total — Centro de Custo ${centroAtualLinha}</td><td class="num">R$ ${formatarReais(subtotalCentro)}</td></tr>`;
+      html += `<tr class="finsubtotal"><td colspan="5">Total — Centro de Custo ${centroAtualLinha}</td><td class="num">${formatarReais(subtotalCentro)}</td></tr>`;
       subtotalCentro = 0;
     }
     function fecharFrente(){
-      html += `<tr class="finfrentetotal"><td colspan="5">Total — Frente ${frenteAtualLinha}</td><td class="num">R$ ${formatarReais(subtotalFrente)}</td></tr>`;
+      html += `<tr class="finfrentetotal"><td colspan="5">Total — Frente ${frenteAtualLinha}</td><td class="num">${formatarReais(subtotalFrente)}</td></tr>`;
       subtotalFrente = 0;
     }
 
@@ -495,8 +499,8 @@
           <td>${l.peca}</td>
           <td>${l.centroCusto}</td>
           <td class="center">${l.qtd}</td>
-          <td class="num">R$ ${formatarReais(l.valorUnit)}</td>
-          <td class="num">R$ ${formatarReais(l.valorTotal)}</td>
+          <td class="num">${formatarReais(l.valorUnit)}</td>
+          <td class="num">${formatarReais(l.valorTotal)}</td>
         </tr>`;
       if(idx === linhas.length - 1){
         fecharCentro();
@@ -504,7 +508,7 @@
       }
     });
     const totalGeral = linhas.reduce((acc, l) => acc + l.valorTotal, 0);
-    html += `<tr class="fingrandtotal"><td colspan="5">Total geral</td><td class="num">R$ ${formatarReais(totalGeral)}</td></tr>`;
+    html += `<tr class="fingrandtotal"><td colspan="5">Total geral</td><td class="num">${formatarReais(totalGeral)}</td></tr>`;
     document.getElementById('tblFinanceiro').innerHTML = html || '<tr><td colspan="6" class="desc">Nenhuma saída com centro de custo para este filtro.</td></tr>';
 
     const todasSaidasComCentro = movimentacoes.filter(m => m.tipo === 'SAIDA' && m.centroCusto);
@@ -697,6 +701,14 @@
   document.getElementById('cfgTelaInicial').addEventListener('change', e => {
     switchView(e.target.value);
     document.querySelector(`.navitem[data-view="${e.target.value}"]`)?.classList.add('active');
+  });
+  document.getElementById('cfgMoeda').addEventListener('change', e => {
+    configPref.moeda = e.target.value;
+    renderFinanceiro();
+  });
+  document.getElementById('cfgFormatoData').addEventListener('change', e => {
+    configPref.formatoData = e.target.value;
+    renderHistorico();
   });
 
   function tick(){
