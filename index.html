@@ -221,18 +221,45 @@
   .modal-card h2{margin:0 0 4px; font-size:16px; color:var(--navy); font-weight:700;}
   .modal-card .desc{color:var(--muted); font-size:12.5px; margin-bottom:16px;}
 
+  .hamburger-btn{
+    display:none; align-items:center; justify-content:center; width:36px; height:36px; flex-shrink:0;
+    border:1px solid #dde2e9; border-radius:9px; background:#fff; cursor:pointer; padding:0;
+  }
+  .hamburger-btn span{display:block; width:16px; height:2px; background:var(--navy); margin:3px auto; border-radius:2px;}
+  .sidebar-backdrop{position:fixed; inset:0; z-index:99; background:rgba(15,23,42,.45); display:none;}
+  .sidebar-backdrop.show{display:block;}
+
   @media(max-width:760px){
-    .shell{flex-direction:column;}
-    .sidebar{width:100%; min-height:auto; position:static; border-right:none; border-bottom:1px solid var(--sidebar-border);}
-    .navlist{flex-direction:row; overflow-x:auto;}
-    .navitem{white-space:nowrap;}
-    .search{width:170px;}
-    .content{padding:18px 16px 32px;}
+    .hamburger-btn{display:flex;}
+    .sidebar{
+      position:fixed; top:0; left:0; z-index:100; width:250px; height:100vh;
+      transform:translateX(-100%); transition:transform .22s ease; box-shadow:0 0 24px rgba(15,23,42,.18);
+    }
+    .sidebar.open{transform:translateX(0);}
+    .navlist{flex-direction:column; overflow-x:visible;}
+    .navitem{white-space:normal;}
+    .topheader{padding:12px 14px; gap:10px;}
+    .brandline{min-width:0; flex:1 1 auto; overflow:hidden;}
+    .brandtext{min-width:0; overflow:hidden;}
+    .apptitle{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+    .appsub{display:none;}
+    .search-wrap{display:none;}
+    .headeractions{flex-shrink:0;}
+    .btn-pill-primary{padding:9px 14px; font-size:12.5px; flex-shrink:0;}
+    .content{padding:16px 14px 32px;}
+    .pagetitle{font-size:18px;}
+  }
+
+  @media(max-width:420px){
+    .apptitle{font-size:13px;}
+    .btn-pill-primary{font-size:0; padding:9px; width:36px; height:36px; border-radius:9px;}
+    .btn-pill-primary::before{content:"+"; font-size:18px; line-height:1;}
   }
 </style>
 
 <div class="shell">
-  <aside class="sidebar">
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+  <aside class="sidebar" id="sidebarNav">
     <div class="profile">
       <div class="avatar">M</div>
       <div>
@@ -266,8 +293,9 @@
   <div class="main">
     <header class="topheader">
       <div class="brandline">
+        <button class="hamburger-btn" id="btnHamburger" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span><span></span></button>
         <div class="logo-diamond"></div>
-        <div>
+        <div class="brandtext">
           <div class="apptitle">Controle de Fardamento</div>
           <div class="appsub">Logística Recife · Painel</div>
         </div>
@@ -1312,8 +1340,28 @@
   }
 
   document.querySelectorAll('.navitem').forEach(btn => {
-    btn.addEventListener('click', () => switchView(btn.dataset.view));
+    btn.addEventListener('click', () => { switchView(btn.dataset.view); fecharMenuMobile(); });
   });
+
+  const btnHamburger = document.getElementById('btnHamburger');
+  const sidebarNav = document.getElementById('sidebarNav');
+  const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
+  function abrirMenuMobile(){
+    sidebarNav.classList.add('open');
+    sidebarBackdrop.classList.add('show');
+    btnHamburger.setAttribute('aria-expanded', 'true');
+  }
+  function fecharMenuMobile(){
+    sidebarNav.classList.remove('open');
+    sidebarBackdrop.classList.remove('show');
+    btnHamburger.setAttribute('aria-expanded', 'false');
+  }
+  btnHamburger.addEventListener('click', () => {
+    sidebarNav.classList.contains('open') ? fecharMenuMobile() : abrirMenuMobile();
+  });
+  sidebarBackdrop.addEventListener('click', fecharMenuMobile);
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') fecharMenuMobile(); });
 
   btnHeaderAction.addEventListener('click', () => {
     if(currentView === 'lancamento') registrarMovimentacao();
