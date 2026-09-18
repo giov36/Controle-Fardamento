@@ -96,7 +96,7 @@
           <div class="grid grid-3">
             <div class="field">
               <label>Data</label>
-              <input type="date" id="fData" value="2026-09-11">
+              <input type="date" id="fData">
             </div>
             <div class="field">
               <label>Frente</label>
@@ -390,75 +390,21 @@
 <div class="toast" id="toast"></div>
 
 <div class="modal-overlay" id="editOverlay">
-  <div class="modal-card">
+  <div class="modal-card small">
     <h2>Editar movimentação</h2>
-    <div class="desc">Corrija o item, o tamanho ou os demais dados deste lançamento.</div>
+    <div class="desc">Corrija o item ou tamanho deste lançamento.</div>
 
     <div class="field">
-      <label>Tipo de movimentação</label>
-      <div class="toggle-group">
-        <button type="button" class="sel-saida" id="editBtnSaida">↓ Saída</button>
-        <button type="button" class="sel-entrada" id="editBtnEntrada">↑ Entrada</button>
-      </div>
+      <label>Item / Tamanho</label>
+      <select id="editItem"></select>
     </div>
 
-    <div class="grid grid-3">
-      <div class="field">
-        <label>Data</label>
-        <input type="date" id="editData">
+    <div class="actions" style="justify-content:space-between;">
+      <button class="btn btn-ghost" id="editBtnExcluir" style="color:var(--red);">Excluir</button>
+      <div style="display:flex; gap:10px;">
+        <button class="btn btn-ghost" id="editBtnCancelar">Cancelar</button>
+        <button class="btn btn-primary" id="editBtnSalvar">Salvar alterações</button>
       </div>
-      <div class="field">
-        <label>Frente</label>
-        <select id="editFrente">
-          <option value="ESCRITÓRIO">Escritório</option>
-          <option value="RF">RF</option>
-          <option value="CAMPO">Campo</option>
-          <option value="CHAPÉU AUSTRALIANO">Chapéu Australiano</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Item / Tamanho</label>
-        <select id="editItem"></select>
-      </div>
-    </div>
-
-    <div class="grid grid-3">
-      <div class="field">
-        <label>Quantidade</label>
-        <input type="number" id="editQtd" min="1">
-      </div>
-    </div>
-
-    <div id="editCamposSaida">
-      <div class="grid grid-3">
-        <div class="field">
-          <label>Colaborador (recebedor)</label>
-          <input type="text" id="editColaborador" placeholder="Nome do colaborador">
-        </div>
-        <div class="field">
-          <label>Centro de Custo</label>
-          <input type="text" id="editCentroCusto" placeholder="Ex: 20623">
-        </div>
-        <div class="field">
-          <label>Solicitado por</label>
-          <input type="text" id="editSolicitadoPor" placeholder="Nome de quem solicitou">
-        </div>
-      </div>
-      <div class="grid grid-3">
-        <div class="field">
-          <label>E-mail do solicitante</label>
-          <input type="text" id="editEmail" placeholder="nome@tpfe.com.br">
-        </div>
-        <div class="field">
-          <label>Observação (opcional)</label>
-          <input type="text" id="editObservacao" placeholder="Ex: despachado via transportadora">
-        </div>
-      </div>
-    </div>
-
-    <div class="actions">
-      <button class="btn btn-ghost" id="editBtnCancelar">Cancelar</button>
-      <button class="btn btn-primary" id="editBtnSalvar">Salvar alterações</button>
     </div>
   </div>
 </div>

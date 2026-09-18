@@ -132,7 +132,15 @@
     showToast._t = setTimeout(() => toast.classList.remove('show'), 2500);
   }
 
+  function dataDeHoje(){
+    const d = new Date();
+    const mes = String(d.getMonth() + 1).padStart(2, '0');
+    const dia = String(d.getDate()).padStart(2, '0');
+    return `${d.getFullYear()}-${mes}-${dia}`;
+  }
+
   function limparForm(){
+    fData.value = dataDeHoje();
     fQtd.value = 1;
     txtColaborador.value = '';
     txtCentroCusto.value = '';
@@ -576,56 +584,15 @@
   });
 
   const editOverlay = document.getElementById('editOverlay');
-  const editBtnEntrada = document.getElementById('editBtnEntrada');
-  const editBtnSaida = document.getElementById('editBtnSaida');
-  const editCamposSaida = document.getElementById('editCamposSaida');
-  const editData = document.getElementById('editData');
-  const editFrente = document.getElementById('editFrente');
   const editItem = document.getElementById('editItem');
-  const editQtd = document.getElementById('editQtd');
-  const editColaborador = document.getElementById('editColaborador');
-  const editCentroCusto = document.getElementById('editCentroCusto');
-  const editSolicitadoPor = document.getElementById('editSolicitadoPor');
-  const editEmail = document.getElementById('editEmail');
-  const editObservacao = document.getElementById('editObservacao');
-  let editTipo = 'saida';
   let editingId = null;
-
-  function editRefreshItemOptions(){
-    const itens = itensDaFrente(editFrente.value);
-    editItem.innerHTML = itens.map(i => `<option value="${i.Title}">${itemLabel(i)}</option>`).join('');
-  }
-
-  function editSetTipo(tipo){
-    editTipo = tipo;
-    if(tipo === 'entrada'){
-      editBtnEntrada.classList.add('on'); editBtnSaida.classList.remove('on');
-      editCamposSaida.style.display = 'none';
-    } else {
-      editBtnSaida.classList.add('on'); editBtnEntrada.classList.remove('on');
-      editCamposSaida.style.display = '';
-    }
-  }
-
-  editBtnEntrada.addEventListener('click', () => editSetTipo('entrada'));
-  editBtnSaida.addEventListener('click', () => editSetTipo('saida'));
-  editFrente.addEventListener('change', editRefreshItemOptions);
 
   function abrirEdicao(id){
     const mov = movimentacoes.find(m => m.id === id);
     if(!mov) return;
     editingId = id;
-    editData.value = mov.data;
-    editFrente.value = mov.frente;
-    editRefreshItemOptions();
+    editItem.innerHTML = itensDaFrente(mov.frente).map(i => `<option value="${i.Title}">${itemLabel(i)}</option>`).join('');
     editItem.value = mov.item;
-    editQtd.value = mov.quantidade;
-    editColaborador.value = mov.colaborador;
-    editCentroCusto.value = mov.centroCusto;
-    editSolicitadoPor.value = mov.solicitadoPor;
-    editEmail.value = mov.email;
-    editObservacao.value = mov.observacao;
-    editSetTipo(mov.tipo === 'ENTRADA' ? 'entrada' : 'saida');
     editOverlay.classList.add('show');
   }
 
@@ -641,34 +608,31 @@
     const mov = movimentacoes.find(m => m.id === editingId);
     if(!mov) return;
     const item = ITENS.find(i => i.Title === editItem.value);
-    const qtd = parseInt(editQtd.value) || 0;
-    if(!item || qtd <= 0){
-      showToast('Selecione um item e uma quantidade válida.');
+    if(!item){
+      showToast('Selecione um item.');
       return;
     }
-    const tipo = editTipo.toUpperCase();
-    if(tipo === 'SAIDA' && !editColaborador.value.trim()){
-      showToast('Informe o colaborador para registrar a saída.');
-      return;
-    }
-    mov.data = editData.value;
-    mov.frente = editFrente.value;
     mov.item = item.Title;
-    mov.tipo = tipo;
-    mov.quantidade = qtd;
-    mov.colaborador = tipo === 'SAIDA' ? editColaborador.value.trim() : '';
-    mov.centroCusto = tipo === 'SAIDA' ? editCentroCusto.value.trim() : '';
-    mov.idInterno = tipo === 'SAIDA' ? (mov.idInterno || proximoIdInterno()) : undefined;
-    mov.idFinanceiro = tipo === 'SAIDA' ? (mov.idFinanceiro || '') : undefined;
-    mov.solicitadoPor = tipo === 'SAIDA' ? editSolicitadoPor.value.trim() : '';
-    mov.email = tipo === 'SAIDA' ? editEmail.value.trim() : '';
-    mov.observacao = editObservacao.value.trim();
     fecharEdicao();
     showToast('Movimentação atualizada com sucesso!');
     renderHistorico();
     renderDashboard();
     renderEstoqueCompleto();
     renderFinanceiro();
+  });
+
+  document.getElementById('editBtnExcluir').addEventListener('click', () => {
+    const id = editingId;
+    abrirConfirmacao('Excluir movimentação', 'Excluir esse lançamento definitivamente desta sessão? Isso não pode ser desfeito.', () => {
+      movimentacoes = movimentacoes.filter(m => m.id !== id);
+      fecharEdicao();
+      updateNavCounts();
+      renderHistorico();
+      renderDashboard();
+      renderEstoqueCompleto();
+      renderFinanceiro();
+      showToast('Movimentação excluída.');
+    });
   });
 
   const confirmOverlay = document.getElementById('confirmOverlay');
@@ -747,6 +711,7 @@
 
   refreshItemOptions();
   setTipo('saida');
+  fData.value = dataDeHoje();
   updateHeaderForView('lancamento');
   updateNavCounts();
   renderDashboard();
