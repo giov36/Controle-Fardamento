@@ -717,7 +717,7 @@
     return `${dia}/${mes}/${agora.getFullYear()} às ${hh}:${mm}`;
   }
 
-  function exportarExcelFinanceiro(){
+  async function exportarExcelFinanceiro(){
     const saidas = saidasFiltradas();
     const colunas = ['ID Interno', 'Data', 'Tipo de Produto', 'Fardamento', 'Colaborador', 'Centro de Custo', 'Quantidade', 'ID Financeiro', 'Lançado'];
     const linhas = saidas.map(m => [
@@ -732,18 +732,32 @@
       comecaComPaOuPg(m.idFinanceiro) ? 'SIM' : 'NÃO'
     ]);
 
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet('Prestação de contas');
+
     const meta = `Gerado em ${formatarDataHoraAgora()} · Controle de Fardamento · Prestação de contas das saídas`;
-    const planilha = XLSX.utils.aoa_to_sheet([[meta], [], colunas, ...linhas]);
-    planilha['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: colunas.length - 1 } }];
-    planilha['!cols'] = colunas.map((coluna, i) => {
-      const maiorConteudo = Math.max(coluna.length, ...linhas.map((linha) => String(linha[i] ?? '').length));
-      return { wch: Math.max(maiorConteudo + 4, 12) };
+    sheet.addRow([meta]);
+    sheet.mergeCells(1, 1, 1, colunas.length);
+    sheet.getRow(1).font = { bold: true };
+    sheet.getRow(1).alignment = { horizontal: 'center', vertical: 'middle' };
+
+    sheet.addRow([]);
+
+    sheet.addRow(colunas);
+    sheet.getRow(3).font = { bold: true };
+    sheet.getRow(3).alignment = { horizontal: 'center', vertical: 'middle' };
+
+    linhas.forEach(linha => {
+      const row = sheet.addRow(linha);
+      row.alignment = { horizontal: 'center', vertical: 'middle' };
     });
 
-    const livro = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(livro, planilha, 'Prestação de contas');
+    colunas.forEach((coluna, i) => {
+      const maiorConteudo = Math.max(coluna.length, ...linhas.map((linha) => String(linha[i] ?? '').length));
+      sheet.getColumn(i + 1).width = Math.max(maiorConteudo + 4, 12);
+    });
 
-    const arrayBuffer = XLSX.write(livro, { bookType: 'xlsx', type: 'array' });
+    const arrayBuffer = await workbook.xlsx.writeBuffer();
     const blobExcel = new Blob([arrayBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     const url = URL.createObjectURL(blobExcel);
     const link = document.createElement('a');
