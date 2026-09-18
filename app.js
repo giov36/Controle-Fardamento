@@ -26,7 +26,20 @@
     {data:"2026-04-14", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Manga Longa Masculina G", tipo:"SAIDA", quantidade:67, colaborador:"José Ricardo", centroCusto:"20623", idFinanceiro:"", solicitadoPor:"José Ricardo", email:"jose.ricardo@tpfe.com.br", observacao:""},
     {data:"2026-05-02", frente:"CAMPO", item:"[CAMPO] Manga Longa Feminina P", tipo:"ENTRADA", quantidade:40, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
     {data:"2026-09-08", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Camisa T-Shirt Unissex GG", tipo:"SAIDA", quantidade:9, colaborador:"Ana Paula", centroCusto:"20623", idFinanceiro:"PG2091", solicitadoPor:"Ana Paula", email:"ana.paula@tpfe.com.br", observacao:""},
-    {data:"2026-06-01", frente:"RF", item:"[RF] Macacão RF Unissex M", tipo:"ENTRADA", quantidade:15, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""}
+    {data:"2026-06-01", frente:"RF", item:"[RF] Macacão RF Unissex M", tipo:"ENTRADA", quantidade:15, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-01-05", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Manga Longa Feminina PP", tipo:"ENTRADA", quantidade:60, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-01-12", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Manga Longa Masculina P", tipo:"ENTRADA", quantidade:35, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-01-18", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Manga Longa Feminina G", tipo:"ENTRADA", quantidade:20, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-02-02", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Camisa T-Shirt Unissex M", tipo:"ENTRADA", quantidade:55, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-02-10", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Camisa T-Shirt Unissex P", tipo:"ENTRADA", quantidade:28, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-02-15", frente:"CAMPO", item:"[CAMPO] Manga Longa Masculina PP", tipo:"ENTRADA", quantidade:42, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-02-20", frente:"CAMPO", item:"[CAMPO] Manga Longa Feminina PP", tipo:"ENTRADA", quantidade:44, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-03-01", frente:"CAMPO", item:"[CAMPO] Manga Longa Masculina G", tipo:"ENTRADA", quantidade:65, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-03-08", frente:"CAMPO", item:"[CAMPO] Manga Longa Feminina GG", tipo:"ENTRADA", quantidade:15, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-03-15", frente:"RF", item:"[RF] Conjunto RF Unissex P", tipo:"ENTRADA", quantidade:40, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-03-22", frente:"RF", item:"[RF] Conjunto RF Unissex G", tipo:"ENTRADA", quantidade:20, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-04-01", frente:"RF", item:"[RF] Conjunto RF Unissex GG", tipo:"ENTRADA", quantidade:30, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-04-08", frente:"RF", item:"[RF] Conjunto RF Unissex XG", tipo:"ENTRADA", quantidade:32, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""}
   ];
   movimentacoes.forEach((m, i) => { m.id = i + 1; });
   let nextMovId = movimentacoes.length + 1;
