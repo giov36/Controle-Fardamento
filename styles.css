@@ -182,7 +182,7 @@ img{max-width:100%}
   .pill-entrada{background:var(--green-bg); color:var(--green);}
   .pill-saida{background:var(--red-bg); color:var(--red);}
   .fin-id-input{
-    width:100%; min-width:90px; padding:7px 8px; border:1px solid transparent; border-radius:7px;
+    width:100%; min-width:90px; padding:9px 12px; border:1px solid transparent; border-radius:7px;
     font-size:12.5px; font-weight:700; background:transparent; color:var(--text); font-family:inherit;
   }
   .fin-id-input:focus{outline:none; border-color:var(--accent); background:#fff;}

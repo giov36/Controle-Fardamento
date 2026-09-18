@@ -199,13 +199,6 @@
   fItem.addEventListener('change', updateStockHint);
   fQtd.addEventListener('input', updateStockHint);
 
-  function barraCor(ratio){
-    if (ratio <= 0) return '#c0392b';
-    if (ratio < 0.5) return '#c0392b';
-    if (ratio < 1) return '#b7791f';
-    return '#17875a';
-  }
-
   function itensCriticos(frenteFiltro){
     return ITENS
       .filter(i => parseInt(i.EstoqueMinimo) > 0)
@@ -235,15 +228,35 @@
     document.getElementById('kpiCustoNaoLancado').textContent = custoNaoLancado;
     document.getElementById('totalItensCatalogo').textContent = `${abaixoMinimo} itens críticos`;
 
-    const criticos = itensCriticos().slice(0, 5);
-    document.getElementById('barrasEstoque').innerHTML = criticos.map(x => `
+    renderResumoEstoque();
+  }
+
+  function corPorSituacao(chave){
+    if(chave === 'critico') return '#c0392b';
+    if(chave === 'baixo') return '#b7791f';
+    return '#17875a';
+  }
+
+  function renderResumoEstoque(){
+    const chave = document.getElementById('ddResumoSituacao').value;
+    const linhas = ITENS
+      .filter(i => parseInt(i.EstoqueMinimo) > 0)
+      .map(i => ({ item: i, ...situacaoDoItem(i) }))
+      .filter(x => x.chave === chave)
+      .sort((a, b) => (a.ratio ?? 0) - (b.ratio ?? 0))
+      .slice(0, 8);
+
+    const mensagem = { critico: 'Nenhum item crítico agora.', baixo: 'Nenhum item baixo agora.', ok: 'Nenhum item OK no momento.' }[chave];
+    document.getElementById('barrasEstoque').innerHTML = linhas.map(x => `
       <div class="barwrap">
         <div class="lbl">${x.item.Title}</div>
-        <div class="bar-bg"><div class="bar-fill" style="width:${Math.max(0, Math.min(100, x.ratio * 100))}%; background:${barraCor(x.ratio)};"></div></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:${Math.max(4, Math.min(100, x.ratio * 100))}%; background:${corPorSituacao(x.chave)};"></div></div>
         <div class="num">${x.atual} / ${x.min}</div>
       </div>
-    `).join('') || '<div class="desc">Nenhum item em estado crítico agora.</div>';
+    `).join('') || `<div class="desc">${mensagem}</div>`;
   }
+
+  document.getElementById('ddResumoSituacao').addEventListener('change', renderResumoEstoque);
 
   let configPref = { moeda: 'BRL', formatoData: 'DMY' };
 

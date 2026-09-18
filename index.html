@@ -187,7 +187,17 @@
             <h2>Estoque por frente</h2>
             <span class="totalcount" id="totalItensCatalogo">—</span>
           </div>
-          <div class="desc">Nível de estoque atual comparado ao mínimo recomendado (as barras mais escuras indicam itens críticos).</div>
+          <div class="desc">Nível de estoque atual comparado ao mínimo recomendado.</div>
+          <div class="filters">
+            <div class="field">
+              <label>Situação</label>
+              <select id="ddResumoSituacao">
+                <option value="critico">Crítico</option>
+                <option value="baixo">Baixo</option>
+                <option value="ok">OK</option>
+              </select>
+            </div>
+          </div>
           <div id="barrasEstoque"></div>
         </div>
 
