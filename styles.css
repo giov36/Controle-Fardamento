@@ -167,12 +167,10 @@ img{max-width:100%}
   tr:hover td{background:var(--bg);}
   td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
   td.num{font-family:"JetBrains Mono",monospace;}
+  td.mono{font-family:"JetBrains Mono",monospace; font-weight:700; color:var(--navy);}
   td.center, th.center{text-align:center; font-variant-numeric:tabular-nums;}
   .tablewrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius-card); box-shadow:var(--shadow);}
   .tablewrap table{border-radius:var(--radius-card); overflow:hidden;}
-  tr.finsubtotal td{background:#f7f8fa; font-weight:700; color:var(--navy); border-bottom:2px solid var(--line);}
-  tr.finfrentetotal td{background:#eef1f6; font-weight:800; color:var(--navy); border-bottom:2px solid #c7d6f2;}
-  tr.fingrandtotal td{background:var(--navy-soft); font-weight:800; color:var(--navy); border-bottom:none; border-top:2px solid #c7d6f2;}
   .pill{padding:3px 9px; border-radius:20px; font-size:11.5px; font-weight:700; white-space:nowrap;}
   .pill-ok{background:var(--green-bg); color:var(--green);}
   .pill-low{background:var(--amber-bg); color:var(--amber);}
@@ -180,8 +178,14 @@ img{max-width:100%}
   .pill-neutral{background:var(--gray-fill-bg); color:var(--muted);}
   .pill-entrada{background:var(--green-bg); color:var(--green);}
   .pill-saida{background:var(--red-bg); color:var(--red);}
-  .pill-sim{background:var(--green-bg); color:var(--green);}
-  .pill-nao{background:var(--red-bg); color:var(--red);}
+  .fin-id-input{
+    width:100%; min-width:90px; padding:7px 8px; border:1px solid transparent; border-radius:7px;
+    font-size:12.5px; font-weight:700; background:transparent; color:var(--text); font-family:inherit;
+  }
+  .fin-id-input:focus{outline:none; border-color:var(--accent); background:#fff;}
+  .fin-id-input::placeholder{color:var(--muted); font-weight:400;}
+  td.fin-id-pago{background:var(--green-bg);}
+  td.fin-id-pago .fin-id-input{color:var(--green);}
 
   .filters{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px;}
   .filters .field{flex:1; min-width:150px; margin-bottom:0;}

@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
 </head>
 <body>
 
@@ -141,13 +142,6 @@
                 <input type="text" id="txtEmail" placeholder="nome@tpfe.com.br">
               </div>
               <div class="field">
-                <label>Custo já lançado?</label>
-                <select id="ddCustoLancado">
-                  <option value="NAO">NÃO</option>
-                  <option value="SIM">SIM</option>
-                </select>
-              </div>
-              <div class="field">
                 <label>Observação (opcional)</label>
                 <input type="text" id="txtObservacao" placeholder="Ex: despachado via transportadora">
               </div>
@@ -183,7 +177,7 @@
           </div>
           <div class="card kpi tone-amber" id="kpiCardCustoNaoLancado">
             <div class="value" id="kpiCustoNaoLancado">—</div>
-            <div class="label">Custos ainda não lançados</div>
+            <div class="label">Saídas ainda não pagas</div>
           </div>
         </div>
 
@@ -261,18 +255,10 @@
                 <option value="SAIDA">Saída</option>
               </select>
             </div>
-            <div class="field">
-              <label>Custo lançado</label>
-              <select id="ddHistCusto">
-                <option value="">Todos</option>
-                <option value="SIM">Sim</option>
-                <option value="NAO">Não</option>
-              </select>
-            </div>
           </div>
           <div class="tablewrap">
           <table>
-            <thead><tr><th>Data</th><th>Item</th><th>Tipo</th><th class="num">Qtd</th><th>Colaborador</th><th>C. Custo</th><th>Lançado</th><th></th></tr></thead>
+            <thead><tr><th>Data</th><th>Item</th><th>Tipo</th><th class="num">Qtd</th><th>Colaborador</th><th>C. Custo</th><th></th></tr></thead>
             <tbody id="tblHistorico"></tbody>
           </table>
           </div>
@@ -287,7 +273,7 @@
           </div>
           <div class="card kpi tone-amber" id="kpiCardFinNaoLancado">
             <div class="value" id="kpiFinNaoLancado">—</div>
-            <div class="label">Ainda não lançado (R$)</div>
+            <div class="label">Ainda não pago (R$)</div>
           </div>
           <div class="card kpi tone-green" style="cursor:default;">
             <div class="value" id="kpiFinCentros">—</div>
@@ -297,17 +283,28 @@
 
         <div class="infobanner">
           <div class="dot"></div>
-          <div>Prestação de contas por Frente: para cada peça que saiu, multiplica a quantidade pelo valor unitário do catálogo e agrupa por Escritório, RF, Campo e Chapéu Australiano. Valores unitários fictícios para esta demo.</div>
+          <div>Prestação de contas das saídas: cada saída lançada ganha um ID Interno próprio (FD01, FD02…). O ID Financeiro é o identificador que vem do financeiro — digite à mão ou importe a planilha de pagamentos abaixo; começando com PA ou PG, a linha fica verde automaticamente.</div>
         </div>
 
         <div class="card">
           <div class="cardhead">
-            <h2>Prestação de contas por Frente</h2>
+            <h2>Importar planilha de pagamentos</h2>
+          </div>
+          <div class="desc">Sobe um Excel com o ID Interno (FD01, FD02…) e o ID Financeiro de cada saída paga. O sistema casa pelo ID Interno e preenche o ID Financeiro automaticamente nas linhas correspondentes.</div>
+          <div class="actions" style="justify-content:flex-start;">
+            <button type="button" class="btn btn-primary" id="btnImportarPlanilhaFin">Prestar Contas</button>
+            <input type="file" id="inputPlanilhaFin" accept=".xlsx,.xls" hidden>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="cardhead">
+            <h2>Prestação de contas das saídas</h2>
             <span class="totalcount" id="totalFinLinhas">—</span>
           </div>
           <div class="filters">
             <div class="field">
-              <label>Frente</label>
+              <label>Tipo de Produto</label>
               <select id="ddFinFrente">
                 <option value="">Todas</option>
                 <option value="ESCRITÓRIO">Escritório</option>
@@ -329,17 +326,17 @@
               </select>
             </div>
             <div class="field">
-              <label>Custo lançado</label>
+              <label>Pagamento</label>
               <select id="ddFinCusto">
                 <option value="">Todos</option>
-                <option value="SIM">Sim</option>
-                <option value="NAO">Não</option>
+                <option value="SIM">Pago</option>
+                <option value="NAO">Pendente</option>
               </select>
             </div>
           </div>
           <div class="tablewrap">
           <table>
-            <thead><tr><th>Frente</th><th>Fardamento</th><th>Centro de Custo</th><th class="center">Quantidade</th><th class="num">Valor unitário</th><th class="num">Valor total</th></tr></thead>
+            <thead><tr><th>ID Interno</th><th>Data</th><th>Tipo de Produto</th><th>Fardamento</th><th>Colaborador</th><th>Centro de Custo</th><th class="center">Quantidade</th><th class="num">Valor unitário</th><th class="num">Valor total</th><th>ID Financeiro</th></tr></thead>
             <tbody id="tblFinanceiro"></tbody>
           </table>
           </div>
@@ -451,13 +448,6 @@
         <div class="field">
           <label>E-mail do solicitante</label>
           <input type="text" id="editEmail" placeholder="nome@tpfe.com.br">
-        </div>
-        <div class="field">
-          <label>Custo já lançado?</label>
-          <select id="editCustoLancado">
-            <option value="NAO">NÃO</option>
-            <option value="SIM">SIM</option>
-          </select>
         </div>
         <div class="field">
           <label>Observação (opcional)</label>

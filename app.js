@@ -10,26 +10,36 @@
   ITENS.forEach(i => { i.ValorUnitario = PRECOS_POR_PECA[i.Peca] || 0; });
 
   let movimentacoes = [
-    {data:"2026-01-10", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Manga Longa Masculina M", tipo:"ENTRADA", quantidade:30, colaborador:"", centroCusto:"", custoLancado:"", solicitadoPor:"", email:"", observacao:""},
-    {data:"2026-02-05", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Manga Longa Masculina M", tipo:"SAIDA", quantidade:22, colaborador:"Rafael Gomes", centroCusto:"30825", custoLancado:"NAO", solicitadoPor:"Rafael Gomes", email:"rafael.gomes@tpfe.com.br", observacao:""},
-    {data:"2026-01-15", frente:"CAMPO", item:"[CAMPO] Manga Longa Masculina M", tipo:"ENTRADA", quantidade:45, colaborador:"", centroCusto:"", custoLancado:"", solicitadoPor:"", email:"", observacao:""},
-    {data:"2026-08-20", frente:"CAMPO", item:"[CAMPO] Manga Longa Masculina M", tipo:"SAIDA", quantidade:18, colaborador:"Denis Gomes", centroCusto:"30825", custoLancado:"NAO", solicitadoPor:"Denis Gomes", email:"denis.gomes@tpfe.com.br", observacao:""},
-    {data:"2026-03-03", frente:"RF", item:"[RF] Conjunto RF Unissex M", tipo:"ENTRADA", quantidade:50, colaborador:"", centroCusto:"", custoLancado:"", solicitadoPor:"", email:"", observacao:""},
-    {data:"2026-03-20", frente:"RF", item:"[RF] Conjunto RF Unissex M", tipo:"SAIDA", quantidade:2, colaborador:"Mayane Nascimento", centroCusto:"33324", custoLancado:"SIM", solicitadoPor:"Mayane Nascimento", email:"mayane.nascimento@tpfe.com.br", observacao:""},
-    {data:"2026-09-05", frente:"RF", item:"[RF] Conjunto RF Unissex M", tipo:"SAIDA", quantidade:6, colaborador:"Carlos Alberto", centroCusto:"00726", custoLancado:"NAO", solicitadoPor:"Carlos Alberto", email:"carlos.alberto@tpfe.com.br", observacao:""},
-    {data:"2026-01-01", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Camisa T-Shirt Unissex G", tipo:"ENTRADA", quantidade:80, colaborador:"", centroCusto:"", custoLancado:"", solicitadoPor:"", email:"", observacao:""},
-    {data:"2026-06-10", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Camisa T-Shirt Unissex G", tipo:"SAIDA", quantidade:16, colaborador:"Equipe Recife", centroCusto:"00726", custoLancado:"NAO", solicitadoPor:"Equipe Recife", email:"equipe.recife@tpfe.com.br", observacao:""},
-    {data:"2026-02-01", frente:"CHAPÉU AUSTRALIANO", item:"[CHAPÉU AUSTRALIANO] Chapéu Australiano Unissex Único", tipo:"ENTRADA", quantidade:25, colaborador:"", centroCusto:"", custoLancado:"", solicitadoPor:"", email:"", observacao:""},
-    {data:"2026-08-10", frente:"CHAPÉU AUSTRALIANO", item:"[CHAPÉU AUSTRALIANO] Chapéu Australiano Unissex Único", tipo:"SAIDA", quantidade:2, colaborador:"Denis Gomes", centroCusto:"30825", custoLancado:"NAO", solicitadoPor:"Denis Gomes", email:"denis.gomes@tpfe.com.br", observacao:""},
-    {data:"2026-07-22", frente:"CHAPÉU AUSTRALIANO", item:"[CHAPÉU AUSTRALIANO] Chapéu Australiano Unissex Único", tipo:"SAIDA", quantidade:5, colaborador:"Equipe Carlos Alberto", centroCusto:"00726", custoLancado:"NAO", solicitadoPor:"Carlos Alberto", email:"carlos.alberto@tpfe.com.br", observacao:""},
-    {data:"2026-01-20", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Manga Longa Masculina G", tipo:"ENTRADA", quantidade:55, colaborador:"", centroCusto:"", custoLancado:"", solicitadoPor:"", email:"", observacao:""},
-    {data:"2026-04-14", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Manga Longa Masculina G", tipo:"SAIDA", quantidade:67, colaborador:"José Ricardo", centroCusto:"20623", custoLancado:"NAO", solicitadoPor:"José Ricardo", email:"jose.ricardo@tpfe.com.br", observacao:""},
-    {data:"2026-05-02", frente:"CAMPO", item:"[CAMPO] Manga Longa Feminina P", tipo:"ENTRADA", quantidade:40, colaborador:"", centroCusto:"", custoLancado:"", solicitadoPor:"", email:"", observacao:""},
-    {data:"2026-09-08", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Camisa T-Shirt Unissex GG", tipo:"SAIDA", quantidade:9, colaborador:"Ana Paula", centroCusto:"20623", custoLancado:"SIM", solicitadoPor:"Ana Paula", email:"ana.paula@tpfe.com.br", observacao:""},
-    {data:"2026-06-01", frente:"RF", item:"[RF] Macacão RF Unissex M", tipo:"ENTRADA", quantidade:15, colaborador:"", centroCusto:"", custoLancado:"", solicitadoPor:"", email:"", observacao:""}
+    {data:"2026-01-10", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Manga Longa Masculina M", tipo:"ENTRADA", quantidade:30, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-02-05", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Manga Longa Masculina M", tipo:"SAIDA", quantidade:22, colaborador:"Rafael Gomes", centroCusto:"30825", idFinanceiro:"", solicitadoPor:"Rafael Gomes", email:"rafael.gomes@tpfe.com.br", observacao:""},
+    {data:"2026-01-15", frente:"CAMPO", item:"[CAMPO] Manga Longa Masculina M", tipo:"ENTRADA", quantidade:45, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-08-20", frente:"CAMPO", item:"[CAMPO] Manga Longa Masculina M", tipo:"SAIDA", quantidade:18, colaborador:"Denis Gomes", centroCusto:"30825", idFinanceiro:"", solicitadoPor:"Denis Gomes", email:"denis.gomes@tpfe.com.br", observacao:""},
+    {data:"2026-03-03", frente:"RF", item:"[RF] Conjunto RF Unissex M", tipo:"ENTRADA", quantidade:50, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-03-20", frente:"RF", item:"[RF] Conjunto RF Unissex M", tipo:"SAIDA", quantidade:2, colaborador:"Mayane Nascimento", centroCusto:"33324", idFinanceiro:"PA1024", solicitadoPor:"Mayane Nascimento", email:"mayane.nascimento@tpfe.com.br", observacao:""},
+    {data:"2026-09-05", frente:"RF", item:"[RF] Conjunto RF Unissex M", tipo:"SAIDA", quantidade:6, colaborador:"Carlos Alberto", centroCusto:"00726", idFinanceiro:"", solicitadoPor:"Carlos Alberto", email:"carlos.alberto@tpfe.com.br", observacao:""},
+    {data:"2026-01-01", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Camisa T-Shirt Unissex G", tipo:"ENTRADA", quantidade:80, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-06-10", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Camisa T-Shirt Unissex G", tipo:"SAIDA", quantidade:16, colaborador:"Equipe Recife", centroCusto:"00726", idFinanceiro:"", solicitadoPor:"Equipe Recife", email:"equipe.recife@tpfe.com.br", observacao:""},
+    {data:"2026-02-01", frente:"CHAPÉU AUSTRALIANO", item:"[CHAPÉU AUSTRALIANO] Chapéu Australiano Unissex Único", tipo:"ENTRADA", quantidade:25, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-08-10", frente:"CHAPÉU AUSTRALIANO", item:"[CHAPÉU AUSTRALIANO] Chapéu Australiano Unissex Único", tipo:"SAIDA", quantidade:2, colaborador:"Denis Gomes", centroCusto:"30825", idFinanceiro:"", solicitadoPor:"Denis Gomes", email:"denis.gomes@tpfe.com.br", observacao:""},
+    {data:"2026-07-22", frente:"CHAPÉU AUSTRALIANO", item:"[CHAPÉU AUSTRALIANO] Chapéu Australiano Unissex Único", tipo:"SAIDA", quantidade:5, colaborador:"Equipe Carlos Alberto", centroCusto:"00726", idFinanceiro:"", solicitadoPor:"Carlos Alberto", email:"carlos.alberto@tpfe.com.br", observacao:""},
+    {data:"2026-01-20", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Manga Longa Masculina G", tipo:"ENTRADA", quantidade:55, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-04-14", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Manga Longa Masculina G", tipo:"SAIDA", quantidade:67, colaborador:"José Ricardo", centroCusto:"20623", idFinanceiro:"", solicitadoPor:"José Ricardo", email:"jose.ricardo@tpfe.com.br", observacao:""},
+    {data:"2026-05-02", frente:"CAMPO", item:"[CAMPO] Manga Longa Feminina P", tipo:"ENTRADA", quantidade:40, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
+    {data:"2026-09-08", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Camisa T-Shirt Unissex GG", tipo:"SAIDA", quantidade:9, colaborador:"Ana Paula", centroCusto:"20623", idFinanceiro:"PG2091", solicitadoPor:"Ana Paula", email:"ana.paula@tpfe.com.br", observacao:""},
+    {data:"2026-06-01", frente:"RF", item:"[RF] Macacão RF Unissex M", tipo:"ENTRADA", quantidade:15, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""}
   ];
   movimentacoes.forEach((m, i) => { m.id = i + 1; });
   let nextMovId = movimentacoes.length + 1;
+
+  let nextIdInternoSeq = 1;
+  function proximoIdInterno(){ return 'FD' + String(nextIdInternoSeq++).padStart(2, '0'); }
+  movimentacoes.forEach(m => { if(m.tipo === 'SAIDA') m.idInterno = proximoIdInterno(); });
+
+  /* verde só quando o texto de verdade começa com PA ou PG (prefixo real
+     do comprovante importado da planilha do financeiro) */
+  function comecaComPaOuPg(texto){
+    return /^(pa|pg)/i.test((texto || '').trim());
+  }
 
   const fData = document.getElementById('fData');
   const fFrente = document.getElementById('fFrente');
@@ -45,7 +55,6 @@
   const txtCentroCusto = document.getElementById('txtCentroCusto');
   const txtSolicitadoPor = document.getElementById('txtSolicitadoPor');
   const txtEmail = document.getElementById('txtEmail');
-  const ddCustoLancado = document.getElementById('ddCustoLancado');
   const txtObservacao = document.getElementById('txtObservacao');
   const toast = document.getElementById('toast');
   const headerSearch = document.getElementById('headerSearch');
@@ -130,7 +139,6 @@
     txtSolicitadoPor.value = '';
     txtEmail.value = '';
     txtObservacao.value = '';
-    ddCustoLancado.value = 'NAO';
     updateStockHint();
   }
 
@@ -160,7 +168,8 @@
       quantidade: qtd,
       colaborador: tipo === 'SAIDA' ? txtColaborador.value.trim() : '',
       centroCusto: tipo === 'SAIDA' ? txtCentroCusto.value.trim() : '',
-      custoLancado: tipo === 'SAIDA' ? ddCustoLancado.value : '',
+      idInterno: tipo === 'SAIDA' ? proximoIdInterno() : undefined,
+      idFinanceiro: tipo === 'SAIDA' ? '' : undefined,
       solicitadoPor: tipo === 'SAIDA' ? txtSolicitadoPor.value.trim() : '',
       email: tipo === 'SAIDA' ? txtEmail.value.trim() : '',
       observacao: txtObservacao.value.trim()
@@ -210,7 +219,7 @@
       .filter(m => m.tipo === 'SAIDA' && new Date(m.data) >= ha30dias)
       .reduce((acc, m) => acc + m.quantidade, 0);
     const abaixoMinimo = itensCriticos().length;
-    const custoNaoLancado = movimentacoes.filter(m => m.tipo === 'SAIDA' && m.custoLancado === 'NAO').length;
+    const custoNaoLancado = movimentacoes.filter(m => m.tipo === 'SAIDA' && !comecaComPaOuPg(m.idFinanceiro)).length;
 
     document.getElementById('kpiPecas').textContent = pecas.toLocaleString('pt-BR');
     document.getElementById('kpiSaidas30').textContent = saidas30.toLocaleString('pt-BR');
@@ -238,7 +247,6 @@
   function renderHistorico(){
     const frente = document.getElementById('ddHistFrente').value;
     const tipo = document.getElementById('ddHistTipo').value;
-    const custo = document.getElementById('ddHistCusto').value;
     const hoje = new Date();
     const ha30dias = new Date(hoje.getTime() - 30 * 24 * 60 * 60 * 1000);
 
@@ -247,7 +255,6 @@
     const linhas = movimentacoes
       .filter(m => !frente || m.frente === frente)
       .filter(m => !tipo || m.tipo === tipo)
-      .filter(m => !custo || m.custoLancado === custo)
       .filter(m => !filtroUltimos30 || new Date(m.data) >= ha30dias)
       .filter(m => !globalBusca || m.colaborador.toLowerCase().includes(globalBusca) || m.item.toLowerCase().includes(globalBusca))
       .slice()
@@ -261,13 +268,12 @@
         <td class="num">${m.quantidade}</td>
         <td>${m.colaborador || '—'}</td>
         <td>${m.centroCusto || '—'}</td>
-        <td>${m.tipo === 'SAIDA' ? `<button type="button" class="pill pill-btn ${m.custoLancado === 'SIM' ? 'pill-sim' : 'pill-nao'}" onclick="toggleCustoLancado(${m.id})">${m.custoLancado === 'SIM' ? 'SIM' : 'NÃO'}</button>` : '—'}</td>
         <td class="editcol"><button type="button" class="editbtn" onclick="abrirEdicao(${m.id})" title="Editar movimentação"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 3.5l3 3L7 16H4v-3l9.5-9.5Z"/></svg></button></td>
       </tr>
-    `).join('') || '<tr><td colspan="8" class="desc">Nenhuma movimentação para este filtro.</td></tr>';
+    `).join('') || '<tr><td colspan="7" class="desc">Nenhuma movimentação para este filtro.</td></tr>';
   }
 
-  ['ddHistFrente','ddHistTipo','ddHistCusto'].forEach(id => document.getElementById(id).addEventListener('change', () => { filtroUltimos30 = false; renderHistorico(); }));
+  ['ddHistFrente','ddHistTipo'].forEach(id => document.getElementById(id).addEventListener('change', () => { filtroUltimos30 = false; renderHistorico(); }));
   document.getElementById('histFilterChip').addEventListener('click', () => { filtroUltimos30 = false; renderHistorico(); });
 
   document.getElementById('kpiCardPecas').addEventListener('click', () => {
@@ -290,17 +296,17 @@
     switchView('historico');
     document.getElementById('ddHistTipo').value = 'SAIDA';
     document.getElementById('ddHistFrente').value = '';
-    document.getElementById('ddHistCusto').value = '';
     renderHistorico();
   });
 
   document.getElementById('kpiCardCustoNaoLancado').addEventListener('click', () => {
-    filtroUltimos30 = false;
-    switchView('historico');
-    document.getElementById('ddHistTipo').value = 'SAIDA';
-    document.getElementById('ddHistCusto').value = 'NAO';
-    document.getElementById('ddHistFrente').value = '';
-    renderHistorico();
+    switchView('financeiro');
+    document.getElementById('ddFinCusto').value = 'NAO';
+    document.getElementById('ddFinFrente').value = '';
+    document.getElementById('ddFinItem').value = '';
+    document.getElementById('ddFinCentro').value = '';
+    renderFinanceiro();
+    document.getElementById('tblFinanceiro').closest('.card').scrollIntoView({behavior:'smooth', block:'start'});
   });
 
   document.querySelectorAll('.kpi').forEach(el => {
@@ -441,6 +447,13 @@
     if(pecas.includes(itemAtual)) selectItem.value = itemAtual;
   }
 
+  function statusPagoFiltro(m, custoFiltro){
+    const pago = comecaComPaOuPg(m.idFinanceiro);
+    if(custoFiltro === 'SIM') return pago;
+    if(custoFiltro === 'NAO') return !pago;
+    return true;
+  }
+
   function renderFinanceiro(){
     popularFiltrosFinanceiro();
     const frenteFiltro = document.getElementById('ddFinFrente').value;
@@ -453,67 +466,35 @@
       .filter(m => !frenteFiltro || m.frente === frenteFiltro)
       .filter(m => !itemFiltro || pecaDoItem(m.item) === itemFiltro)
       .filter(m => !centroFiltro || m.centroCusto === centroFiltro)
-      .filter(m => !custoFiltro || m.custoLancado === custoFiltro)
-      .filter(m => !globalBusca || m.centroCusto.toLowerCase().includes(globalBusca) || m.colaborador.toLowerCase().includes(globalBusca) || m.item.toLowerCase().includes(globalBusca));
+      .filter(m => statusPagoFiltro(m, custoFiltro))
+      .filter(m => !globalBusca || m.centroCusto.toLowerCase().includes(globalBusca) || m.colaborador.toLowerCase().includes(globalBusca) || m.item.toLowerCase().includes(globalBusca))
+      .slice()
+      .sort((a, b) => b.data.localeCompare(a.data) || (b.idInterno || '').localeCompare(a.idInterno || ''));
 
-    const grupos = {};
-    saidas.forEach(m => {
-      const peca = pecaDoItem(m.item);
-      const chave = m.frente + '||' + peca + '||' + m.centroCusto;
-      if(!grupos[chave]) grupos[chave] = { frente: m.frente, centroCusto: m.centroCusto, peca, qtd: 0 };
-      grupos[chave].qtd += m.quantidade;
-    });
+    document.getElementById('totalFinLinhas').textContent = `${saidas.length} saídas`;
 
-    const linhas = Object.values(grupos).map(g => {
-      const valorUnit = PRECOS_POR_PECA[g.peca] || 0;
-      return { ...g, valorUnit, valorTotal: valorUnit * g.qtd };
-    }).sort((a, b) => a.frente.localeCompare(b.frente) || a.centroCusto.localeCompare(b.centroCusto) || b.valorTotal - a.valorTotal);
-
-    document.getElementById('totalFinLinhas').textContent = `${linhas.length} lançamentos agrupados`;
-
-    let html = '';
-    let frenteAtualLinha = null;
-    let centroAtualLinha = null;
-    let subtotalFrente = 0;
-    let subtotalCentro = 0;
-
-    function fecharCentro(){
-      html += `<tr class="finsubtotal"><td colspan="5">Total — Centro de Custo ${centroAtualLinha}</td><td class="num">${formatarReais(subtotalCentro)}</td></tr>`;
-      subtotalCentro = 0;
-    }
-    function fecharFrente(){
-      html += `<tr class="finfrentetotal"><td colspan="5">Total — Frente ${frenteAtualLinha}</td><td class="num">${formatarReais(subtotalFrente)}</td></tr>`;
-      subtotalFrente = 0;
-    }
-
-    linhas.forEach((l, idx) => {
-      if(centroAtualLinha !== null && (l.centroCusto !== centroAtualLinha || l.frente !== frenteAtualLinha)) fecharCentro();
-      if(frenteAtualLinha !== null && l.frente !== frenteAtualLinha) fecharFrente();
-      frenteAtualLinha = l.frente;
-      centroAtualLinha = l.centroCusto;
-      subtotalFrente += l.valorTotal;
-      subtotalCentro += l.valorTotal;
-      html += `
+    document.getElementById('tblFinanceiro').innerHTML = saidas.map(m => {
+      const valorUnit = valorUnitarioDoItem(m.item);
+      const valorTotal = valorUnit * m.quantidade;
+      const pago = comecaComPaOuPg(m.idFinanceiro);
+      return `
         <tr>
-          <td>${l.frente}</td>
-          <td>${l.peca}</td>
-          <td>${l.centroCusto}</td>
-          <td class="center">${l.qtd}</td>
-          <td class="num">${formatarReais(l.valorUnit)}</td>
-          <td class="num">${formatarReais(l.valorTotal)}</td>
+          <td class="mono">${m.idInterno || '—'}</td>
+          <td>${formatarData(m.data)}</td>
+          <td>${m.frente}</td>
+          <td>${pecaDoItem(m.item)}</td>
+          <td>${m.colaborador || '—'}</td>
+          <td>${m.centroCusto}</td>
+          <td class="center">${m.quantidade}</td>
+          <td class="num">${formatarReais(valorUnit)}</td>
+          <td class="num">${formatarReais(valorTotal)}</td>
+          <td class="${pago ? 'fin-id-pago' : ''}"><input type="text" class="fin-id-input" data-fin-id="${m.id}" value="${(m.idFinanceiro || '').replace(/"/g, '&quot;')}" placeholder="—"></td>
         </tr>`;
-      if(idx === linhas.length - 1){
-        fecharCentro();
-        fecharFrente();
-      }
-    });
-    const totalGeral = linhas.reduce((acc, l) => acc + l.valorTotal, 0);
-    html += `<tr class="fingrandtotal"><td colspan="5">Total geral</td><td class="num">${formatarReais(totalGeral)}</td></tr>`;
-    document.getElementById('tblFinanceiro').innerHTML = html || '<tr><td colspan="6" class="desc">Nenhuma saída com centro de custo para este filtro.</td></tr>';
+    }).join('') || '<tr><td colspan="10" class="desc">Nenhuma saída com centro de custo para este filtro.</td></tr>';
 
     const todasSaidasComCentro = movimentacoes.filter(m => m.tipo === 'SAIDA' && m.centroCusto);
     const totalTodas = todasSaidasComCentro.reduce((acc, m) => acc + m.quantidade * valorUnitarioDoItem(m.item), 0);
-    const totalNaoLancado = todasSaidasComCentro.filter(m => m.custoLancado === 'NAO').reduce((acc, m) => acc + m.quantidade * valorUnitarioDoItem(m.item), 0);
+    const totalNaoLancado = todasSaidasComCentro.filter(m => !comecaComPaOuPg(m.idFinanceiro)).reduce((acc, m) => acc + m.quantidade * valorUnitarioDoItem(m.item), 0);
     const centrosAtivos = new Set(todasSaidasComCentro.map(m => m.centroCusto)).size;
     document.getElementById('kpiFinTotal').textContent = formatarReais(totalTodas);
     document.getElementById('kpiFinNaoLancado').textContent = formatarReais(totalNaoLancado);
@@ -525,6 +506,67 @@
   document.getElementById('ddFinItem').addEventListener('change', renderFinanceiro);
   document.getElementById('ddFinCentro').addEventListener('change', renderFinanceiro);
   document.getElementById('ddFinCusto').addEventListener('change', renderFinanceiro);
+
+  document.getElementById('tblFinanceiro').addEventListener('change', (ev) => {
+    const input = ev.target.closest('[data-fin-id]');
+    if(!input) return;
+    const mov = movimentacoes.find(m => m.id === Number(input.dataset.finId));
+    if(!mov) return;
+    mov.idFinanceiro = input.value.trim();
+    renderFinanceiro();
+    renderDashboard();
+  });
+
+  function normalizarChaveColuna(chave){
+    return chave.toString().trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  }
+
+  function importarPlanilhaFinanceiro(file){
+    const leitor = new FileReader();
+    leitor.onload = (ev) => {
+      let linhas;
+      try {
+        const dados = new Uint8Array(ev.target.result);
+        const pasta = XLSX.read(dados, {type:'array'});
+        const primeiraAba = pasta.Sheets[pasta.SheetNames[0]];
+        linhas = XLSX.utils.sheet_to_json(primeiraAba, {defval:''});
+      } catch(e){
+        showToast('Não consegui ler essa planilha.');
+        return;
+      }
+      let casados = 0;
+      linhas.forEach(linha => {
+        let colInterno = null, colFinanceiro = null;
+        Object.keys(linha).forEach(chave => {
+          const norm = normalizarChaveColuna(chave);
+          if(norm.includes('interno')) colInterno = chave;
+          else if(norm.includes('financeiro') || norm.includes('pagamento') || norm.includes('pgto')) colFinanceiro = chave;
+        });
+        if(!colInterno || !colFinanceiro) return;
+        const idInterno = linha[colInterno].toString().trim().toUpperCase();
+        const idFinanceiro = linha[colFinanceiro].toString().trim();
+        if(!idInterno || !idFinanceiro) return;
+        const mov = movimentacoes.find(m => m.tipo === 'SAIDA' && (m.idInterno || '').toUpperCase() === idInterno);
+        if(mov){
+          mov.idFinanceiro = idFinanceiro;
+          casados++;
+        }
+      });
+      showToast(casados > 0 ? `${casados} saída(s) atualizadas com o ID Financeiro.` : 'Nenhum ID Interno da planilha bateu com uma saída existente.');
+      renderFinanceiro();
+      renderDashboard();
+    };
+    leitor.readAsArrayBuffer(file);
+  }
+
+  document.getElementById('btnImportarPlanilhaFin').addEventListener('click', () => {
+    document.getElementById('inputPlanilhaFin').click();
+  });
+  document.getElementById('inputPlanilhaFin').addEventListener('change', (ev) => {
+    const file = ev.target.files[0];
+    if(file) importarPlanilhaFinanceiro(file);
+    ev.target.value = '';
+  });
 
   document.getElementById('kpiCardFinNaoLancado').addEventListener('click', () => {
     if(currentView !== 'financeiro') switchView('financeiro');
@@ -545,7 +587,6 @@
   const editCentroCusto = document.getElementById('editCentroCusto');
   const editSolicitadoPor = document.getElementById('editSolicitadoPor');
   const editEmail = document.getElementById('editEmail');
-  const editCustoLancado = document.getElementById('editCustoLancado');
   const editObservacao = document.getElementById('editObservacao');
   let editTipo = 'saida';
   let editingId = null;
@@ -583,7 +624,6 @@
     editCentroCusto.value = mov.centroCusto;
     editSolicitadoPor.value = mov.solicitadoPor;
     editEmail.value = mov.email;
-    editCustoLancado.value = mov.custoLancado || 'NAO';
     editObservacao.value = mov.observacao;
     editSetTipo(mov.tipo === 'ENTRADA' ? 'entrada' : 'saida');
     editOverlay.classList.add('show');
@@ -618,7 +658,8 @@
     mov.quantidade = qtd;
     mov.colaborador = tipo === 'SAIDA' ? editColaborador.value.trim() : '';
     mov.centroCusto = tipo === 'SAIDA' ? editCentroCusto.value.trim() : '';
-    mov.custoLancado = tipo === 'SAIDA' ? editCustoLancado.value : '';
+    mov.idInterno = tipo === 'SAIDA' ? (mov.idInterno || proximoIdInterno()) : undefined;
+    mov.idFinanceiro = tipo === 'SAIDA' ? (mov.idFinanceiro || '') : undefined;
     mov.solicitadoPor = tipo === 'SAIDA' ? editSolicitadoPor.value.trim() : '';
     mov.email = tipo === 'SAIDA' ? editEmail.value.trim() : '';
     mov.observacao = editObservacao.value.trim();
@@ -652,19 +693,6 @@
     fecharConfirmacao();
     if(cb) cb();
   });
-
-  function toggleCustoLancado(id){
-    const mov = movimentacoes.find(m => m.id === id);
-    if(!mov) return;
-    const novoValor = mov.custoLancado === 'SIM' ? 'NAO' : 'SIM';
-    const mensagem = novoValor === 'SIM' ? 'Tem certeza que foi lançado?' : 'Lançamento cancelado?';
-    abrirConfirmacao('Lançamento do Custo', mensagem, () => {
-      mov.custoLancado = novoValor;
-      renderHistorico();
-      renderFinanceiro();
-      showToast('Custo atualizado.');
-    });
-  }
 
   document.querySelectorAll('.navitem').forEach(btn => {
     btn.addEventListener('click', () => { switchView(btn.dataset.view); fecharMenuMobile(); });
