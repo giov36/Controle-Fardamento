@@ -81,6 +81,12 @@
   let currentView = 'lancamento';
   let globalBusca = '';
   let filtroUltimos30 = false;
+  const situacaoHistFiltro = new Set();
+
+  function situacaoDoItemPorTitulo(title){
+    const item = ITENS.find(i => i.Title === title);
+    return item ? situacaoDoItem(item).chave : null;
+  }
 
   function itemLabel(i){
     return i.Genero === 'Unissex' ? `${i.Peca} — ${i.Tamanho}` : `${i.Peca} ${i.Genero} — ${i.Tamanho}`;
@@ -270,10 +276,10 @@
     `).join('') || `<div class="desc">${mensagem}</div>`;
   }
 
-  document.querySelectorAll('.kpi[data-situacao]').forEach(card => {
+  document.querySelectorAll('#view-dashboard .kpi[data-situacao]').forEach(card => {
     card.addEventListener('click', () => {
       situacaoResumoAtual = card.dataset.situacao;
-      document.querySelectorAll('.kpi[data-situacao]').forEach(el => el.classList.toggle('is-active', el === card));
+      document.querySelectorAll('#view-dashboard .kpi[data-situacao]').forEach(el => el.classList.toggle('is-active', el === card));
       renderResumoEstoque();
     });
   });
@@ -294,11 +300,18 @@
     document.getElementById('thHistData').textContent = tipo === 'SAIDA' ? 'Data da Saída' : tipo === 'ENTRADA' ? 'Data da Entrada' : 'Data';
     document.getElementById('histFilterChip').style.display = filtroUltimos30 ? 'inline-flex' : 'none';
 
-    const linhas = movimentacoes
+    const baseFiltrada = movimentacoes
       .filter(m => !frente || m.frente === frente)
       .filter(m => !tipo || m.tipo === tipo)
       .filter(m => !filtroUltimos30 || new Date(m.data) >= ha30dias)
-      .filter(m => !globalBusca || m.colaborador.toLowerCase().includes(globalBusca) || m.item.toLowerCase().includes(globalBusca))
+      .filter(m => !globalBusca || m.colaborador.toLowerCase().includes(globalBusca) || m.item.toLowerCase().includes(globalBusca));
+
+    document.getElementById('kpiHistCritico').textContent = baseFiltrada.filter(m => situacaoDoItemPorTitulo(m.item) === 'critico').length;
+    document.getElementById('kpiHistBaixo').textContent = baseFiltrada.filter(m => situacaoDoItemPorTitulo(m.item) === 'baixo').length;
+    document.getElementById('kpiHistOk').textContent = baseFiltrada.filter(m => situacaoDoItemPorTitulo(m.item) === 'ok').length;
+
+    const linhas = baseFiltrada
+      .filter(m => situacaoHistFiltro.size === 0 || situacaoHistFiltro.has(situacaoDoItemPorTitulo(m.item)))
       .slice()
       .sort((a, b) => numeroIdInterno(a.idInterno) - numeroIdInterno(b.idInterno));
 
@@ -318,6 +331,17 @@
 
   ['ddHistFrente','ddHistTipo'].forEach(id => document.getElementById(id).addEventListener('change', () => { filtroUltimos30 = false; renderHistorico(); }));
   document.getElementById('histFilterChip').addEventListener('click', () => { filtroUltimos30 = false; renderHistorico(); });
+
+  ['kpiCardHistCritico', 'kpiCardHistBaixo', 'kpiCardHistOk'].forEach(id => {
+    const card = document.getElementById(id);
+    card.addEventListener('click', () => {
+      const chave = card.dataset.situacao;
+      if(situacaoHistFiltro.has(chave)) situacaoHistFiltro.delete(chave);
+      else if(situacaoHistFiltro.size < 2) situacaoHistFiltro.add(chave);
+      card.classList.toggle('is-active', situacaoHistFiltro.has(chave));
+      renderHistorico();
+    });
+  });
 
   document.getElementById('kpiCardPecas').addEventListener('click', () => {
     if(currentView !== 'dashboard') switchView('dashboard');

@@ -234,6 +234,20 @@
       </section>
 
       <section class="view" id="view-historico">
+        <div class="grid grid-3" style="margin-bottom:14px;">
+          <div class="card kpi tone-red" id="kpiCardHistCritico" data-situacao="critico">
+            <div class="value" id="kpiHistCritico">—</div>
+            <div class="label">Crítico</div>
+          </div>
+          <div class="card kpi tone-amber" id="kpiCardHistBaixo" data-situacao="baixo">
+            <div class="value" id="kpiHistBaixo">—</div>
+            <div class="label">Baixo</div>
+          </div>
+          <div class="card kpi tone-green" id="kpiCardHistOk" data-situacao="ok">
+            <div class="value" id="kpiHistOk">—</div>
+            <div class="label">OK</div>
+          </div>
+        </div>
         <div class="card">
           <h2>Histórico de movimentações</h2>
           <button type="button" class="filterchip" id="histFilterChip" style="display:none;">Últimos 30 dias ✕</button>
