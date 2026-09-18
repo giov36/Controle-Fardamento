@@ -251,8 +251,10 @@
     return '#17875a';
   }
 
+  let situacaoResumoAtual = 'critico';
+
   function renderResumoEstoque(){
-    const chave = document.getElementById('ddResumoSituacao').value;
+    const chave = situacaoResumoAtual;
     const linhas = ITENS
       .filter(i => parseInt(i.EstoqueMinimo) > 0)
       .map(i => ({ item: i, ...situacaoDoItem(i) }))
@@ -270,7 +272,13 @@
     `).join('') || `<div class="desc">${mensagem}</div>`;
   }
 
-  document.getElementById('ddResumoSituacao').addEventListener('change', renderResumoEstoque);
+  document.getElementById('situacaoChips').addEventListener('click', (ev) => {
+    const chip = ev.target.closest('.situacao-chip');
+    if(!chip) return;
+    situacaoResumoAtual = chip.dataset.situacao;
+    document.querySelectorAll('#situacaoChips .situacao-chip').forEach(el => el.classList.toggle('active', el === chip));
+    renderResumoEstoque();
+  });
 
   let configPref = { moeda: 'BRL', formatoData: 'DMY' };
 
