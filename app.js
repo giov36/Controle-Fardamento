@@ -345,7 +345,7 @@
 
   document.getElementById('kpiCardPecas').addEventListener('click', () => {
     if(currentView !== 'dashboard') switchView('dashboard');
-    document.getElementById('barrasEstoque').closest('.card').scrollIntoView({behavior:'smooth', block:'start'});
+    document.getElementById('tblEstoqueCompleto').closest('.card').scrollIntoView({behavior:'smooth', block:'start'});
   });
 
 
