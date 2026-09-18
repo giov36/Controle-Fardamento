@@ -46,6 +46,7 @@
 
   let nextIdInternoSeq = 1;
   function proximoIdInterno(){ return 'FD' + String(nextIdInternoSeq++).padStart(2, '0'); }
+  function numeroIdInterno(id){ return parseInt((id || '').replace(/\D/g, ''), 10) || 0; }
   movimentacoes.forEach(m => { m.idInterno = proximoIdInterno(); });
 
   /* verde só quando o texto de verdade começa com PA ou PG (prefixo real
@@ -293,7 +294,7 @@
       .filter(m => !filtroUltimos30 || new Date(m.data) >= ha30dias)
       .filter(m => !globalBusca || m.colaborador.toLowerCase().includes(globalBusca) || m.item.toLowerCase().includes(globalBusca))
       .slice()
-      .sort((a, b) => b.data.localeCompare(a.data));
+      .sort((a, b) => numeroIdInterno(b.idInterno) - numeroIdInterno(a.idInterno));
 
     document.getElementById('tblHistorico').innerHTML = linhas.map(m => `
       <tr>
@@ -497,14 +498,13 @@
     return true;
   }
 
-  function renderFinanceiro(){
-    popularFiltrosFinanceiro();
+  function saidasFiltradas(){
     const frenteFiltro = document.getElementById('ddFinFrente').value;
     const itemFiltro = document.getElementById('ddFinItem').value;
     const centroFiltro = document.getElementById('ddFinCentro').value;
     const custoFiltro = document.getElementById('ddFinCusto').value;
 
-    const saidas = movimentacoes
+    return movimentacoes
       .filter(m => m.tipo === 'SAIDA' && m.centroCusto)
       .filter(m => !frenteFiltro || m.frente === frenteFiltro)
       .filter(m => !itemFiltro || pecaDoItem(m.item) === itemFiltro)
@@ -512,13 +512,16 @@
       .filter(m => statusPagoFiltro(m, custoFiltro))
       .filter(m => !globalBusca || m.centroCusto.toLowerCase().includes(globalBusca) || m.colaborador.toLowerCase().includes(globalBusca) || m.item.toLowerCase().includes(globalBusca))
       .slice()
-      .sort((a, b) => b.data.localeCompare(a.data) || (b.idInterno || '').localeCompare(a.idInterno || ''));
+      .sort((a, b) => numeroIdInterno(b.idInterno) - numeroIdInterno(a.idInterno));
+  }
+
+  function renderFinanceiro(){
+    popularFiltrosFinanceiro();
+    const saidas = saidasFiltradas();
 
     document.getElementById('totalFinLinhas').textContent = `${saidas.length} saídas`;
 
     document.getElementById('tblFinanceiro').innerHTML = saidas.map(m => {
-      const valorUnit = valorUnitarioDoItem(m.item);
-      const valorTotal = valorUnit * m.quantidade;
       const pago = comecaComPaOuPg(m.idFinanceiro);
       return `
         <tr>
@@ -529,11 +532,9 @@
           <td>${m.colaborador || '—'}</td>
           <td>${m.centroCusto}</td>
           <td class="center">${m.quantidade}</td>
-          <td class="num">${formatarReais(valorUnit)}</td>
-          <td class="num">${formatarReais(valorTotal)}</td>
           <td class="${pago ? 'fin-id-pago' : ''}"><input type="text" class="fin-id-input" data-fin-id="${m.id}" value="${(m.idFinanceiro || '').replace(/"/g, '&quot;')}" placeholder="—"></td>
         </tr>`;
-    }).join('') || '<tr><td colspan="10" class="desc">Nenhuma saída com centro de custo para este filtro.</td></tr>';
+    }).join('') || '<tr><td colspan="8" class="desc">Nenhuma saída com centro de custo para este filtro.</td></tr>';
 
     const todasSaidasComCentro = movimentacoes.filter(m => m.tipo === 'SAIDA' && m.centroCusto);
     const totalTodas = todasSaidasComCentro.reduce((acc, m) => acc + m.quantidade * valorUnitarioDoItem(m.item), 0);
@@ -601,6 +602,54 @@
     };
     leitor.readAsArrayBuffer(file);
   }
+
+  function formatarDataHoraAgora(){
+    const agora = new Date();
+    const dia = String(agora.getDate()).padStart(2, '0');
+    const mes = String(agora.getMonth() + 1).padStart(2, '0');
+    const hh = String(agora.getHours()).padStart(2, '0');
+    const mm = String(agora.getMinutes()).padStart(2, '0');
+    return `${dia}/${mes}/${agora.getFullYear()} às ${hh}:${mm}`;
+  }
+
+  function exportarExcelFinanceiro(){
+    const saidas = saidasFiltradas();
+    const colunas = ['ID Interno', 'Data', 'Tipo de Produto', 'Fardamento', 'Colaborador', 'Centro de Custo', 'Quantidade', 'ID Financeiro'];
+    const linhas = saidas.map(m => [
+      m.idInterno || '—',
+      formatarData(m.data),
+      m.frente,
+      pecaDoItem(m.item),
+      m.colaborador || '—',
+      m.centroCusto,
+      m.quantidade,
+      m.idFinanceiro || '—'
+    ]);
+
+    const meta = `Gerado em ${formatarDataHoraAgora()} · Controle de Fardamento · Prestação de contas das saídas`;
+    const planilha = XLSX.utils.aoa_to_sheet([[meta], [], colunas, ...linhas]);
+    planilha['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: colunas.length - 1 } }];
+    planilha['!cols'] = colunas.map((coluna, i) => {
+      const maiorConteudo = Math.max(coluna.length, ...linhas.map((linha) => String(linha[i] ?? '').length));
+      return { wch: Math.max(maiorConteudo + 4, 12) };
+    });
+
+    const livro = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(livro, planilha, 'Prestação de contas');
+
+    const arrayBuffer = XLSX.write(livro, { bookType: 'xlsx', type: 'array' });
+    const blobExcel = new Blob([arrayBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = URL.createObjectURL(blobExcel);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'prestacao-contas-fardamento.xlsx';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  document.getElementById('btnExportarExcelFin').addEventListener('click', exportarExcelFinanceiro);
 
   document.getElementById('btnImportarPlanilhaFin').addEventListener('click', () => {
     document.getElementById('inputPlanilhaFin').click();

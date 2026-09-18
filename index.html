@@ -311,7 +311,10 @@
         <div class="card">
           <div class="cardhead">
             <h2>Prestação de contas das saídas</h2>
-            <span class="totalcount" id="totalFinLinhas">—</span>
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span class="totalcount" id="totalFinLinhas">—</span>
+              <button type="button" class="btn btn-ghost" id="btnExportarExcelFin">Exportar Excel</button>
+            </div>
           </div>
           <div class="filters">
             <div class="field">
@@ -347,7 +350,7 @@
           </div>
           <div class="tablewrap">
           <table>
-            <thead><tr><th>ID Interno</th><th>Data</th><th>Tipo de Produto</th><th>Fardamento</th><th>Colaborador</th><th>Centro de Custo</th><th class="center">Quantidade</th><th class="num">Valor unitário</th><th class="num">Valor total</th><th>ID Financeiro</th></tr></thead>
+            <thead><tr><th>ID Interno</th><th>Data</th><th>Tipo de Produto</th><th>Fardamento</th><th>Colaborador</th><th>Centro de Custo</th><th class="center">Quantidade</th><th>ID Financeiro</th></tr></thead>
             <tbody id="tblFinanceiro"></tbody>
           </table>
           </div>
