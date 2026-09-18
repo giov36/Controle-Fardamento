@@ -648,6 +648,26 @@
     return chave.toString().trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
   }
 
+  let arquivoImportadoFin = null;
+
+  function renderArquivoImportadoFin(){
+    const wrap = document.getElementById('arquivoImportadoFinWrap');
+    if(!arquivoImportadoFin){ wrap.innerHTML = ''; return; }
+    wrap.innerHTML = `
+      <div class="file-chip">
+        <span>📄 ${escapeHtml(arquivoImportadoFin.nome)}</span>
+        <button type="button" class="file-chip-remove" id="btnRemoverArquivoFin" title="Remover">✕</button>
+      </div>`;
+  }
+
+  document.getElementById('arquivoImportadoFinWrap').addEventListener('click', (ev) => {
+    if(!ev.target.closest('#btnRemoverArquivoFin')) return;
+    abrirConfirmacao('Remover arquivo', `Remover "${arquivoImportadoFin.nome}" desta lista? Os dados já importados continuam salvos nas saídas.`, () => {
+      arquivoImportadoFin = null;
+      renderArquivoImportadoFin();
+    });
+  });
+
   function importarPlanilhaFinanceiro(file){
     const leitor = new FileReader();
     leitor.onload = (ev) => {
@@ -679,6 +699,8 @@
           casados++;
         }
       });
+      arquivoImportadoFin = { nome: file.name };
+      renderArquivoImportadoFin();
       showToast(casados > 0 ? `${casados} saída(s) atualizadas com o ID Financeiro.` : 'Nenhum ID Interno da planilha bateu com uma saída existente.');
       renderFinanceiro();
       renderDashboard();
