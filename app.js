@@ -533,6 +533,26 @@
       .sort((a, b) => numeroIdInterno(a.idInterno) - numeroIdInterno(b.idInterno));
   }
 
+  let editandoFinId = null;
+
+  function celulaIdFinanceiro(m){
+    const pago = comecaComPaOuPg(m.idFinanceiro);
+    if(editandoFinId === m.id){
+      return `<td class="${pago ? 'fin-id-pago' : ''}"><input type="text" class="fin-id-input" data-fin-id="${m.id}" value="${(m.idFinanceiro || '').replace(/"/g, '&quot;')}" placeholder="—" autofocus></td>`;
+    }
+    return `
+      <td class="${pago ? 'fin-id-pago' : ''}">
+        <div class="fin-id-view">
+          <span class="fin-id-text">${escapeHtml(m.idFinanceiro) || '—'}</span>
+          <button type="button" class="editbtn" data-fin-edit="${m.id}" title="Editar ID Financeiro"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 3.5l3 3L7 16H4v-3l9.5-9.5Z"/></svg></button>
+        </div>
+      </td>`;
+  }
+
+  function escapeHtml(texto){
+    return (texto || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
   function renderFinanceiro(){
     popularFiltrosFinanceiro();
     const saidas = saidasFiltradas();
@@ -550,10 +570,15 @@
           <td>${m.colaborador || '—'}</td>
           <td>${m.centroCusto}</td>
           <td class="center">${m.quantidade}</td>
-          <td class="${pago ? 'fin-id-pago' : ''}"><input type="text" class="fin-id-input" data-fin-id="${m.id}" value="${(m.idFinanceiro || '').replace(/"/g, '&quot;')}" placeholder="—"></td>
+          ${celulaIdFinanceiro(m)}
           <td class="center">${pago ? '<span class="pill pill-sim">SIM</span>' : '<span class="pill pill-nao">NÃO</span>'}</td>
         </tr>`;
     }).join('') || '<tr><td colspan="9" class="desc">Nenhuma saída com centro de custo para este filtro.</td></tr>';
+
+    if(editandoFinId !== null){
+      const input = document.querySelector(`.fin-id-input[data-fin-id="${editandoFinId}"]`);
+      if(input){ input.focus(); input.select(); }
+    }
 
     const todasSaidasComCentro = movimentacoes.filter(m => m.tipo === 'SAIDA' && m.centroCusto);
     const totalTodas = todasSaidasComCentro.reduce((acc, m) => acc + m.quantidade * valorUnitarioDoItem(m.item), 0);
@@ -570,12 +595,27 @@
   document.getElementById('ddFinCentro').addEventListener('change', renderFinanceiro);
   document.getElementById('ddFinCusto').addEventListener('change', renderFinanceiro);
 
-  document.getElementById('tblFinanceiro').addEventListener('change', (ev) => {
+  document.getElementById('tblFinanceiro').addEventListener('click', (ev) => {
+    const botaoEditar = ev.target.closest('[data-fin-edit]');
+    if(!botaoEditar) return;
+    editandoFinId = Number(botaoEditar.dataset.finEdit);
+    renderFinanceiro();
+  });
+
+  document.getElementById('tblFinanceiro').addEventListener('keydown', (ev) => {
+    if(ev.key === 'Enter' && ev.target.closest('[data-fin-id]')) ev.target.blur();
+    if(ev.key === 'Escape' && ev.target.closest('[data-fin-id]')){
+      editandoFinId = null;
+      renderFinanceiro();
+    }
+  });
+
+  document.getElementById('tblFinanceiro').addEventListener('focusout', (ev) => {
     const input = ev.target.closest('[data-fin-id]');
     if(!input) return;
     const mov = movimentacoes.find(m => m.id === Number(input.dataset.finId));
-    if(!mov) return;
-    mov.idFinanceiro = input.value.trim();
+    if(mov) mov.idFinanceiro = input.value.trim();
+    editandoFinId = null;
     renderFinanceiro();
     renderDashboard();
   });
