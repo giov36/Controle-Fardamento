@@ -162,7 +162,7 @@ img{max-width:100%}
   .filterchip:hover{background:#dde8fb;}
 
   table{width:100%; border-collapse:collapse; font-size:13px; background:var(--card);}
-  th, td{padding:10px 10px; text-align:left; border-bottom:1px solid var(--line);}
+  th, td{padding:10px 10px; text-align:center; border-bottom:1px solid var(--line);}
   th{color:var(--muted); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; font-weight:700; background:var(--navy-soft);}
   tr:hover td{background:var(--bg);}
   td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
@@ -170,7 +170,7 @@ img{max-width:100%}
   td.num-low{color:var(--amber); font-weight:800;}
   td.num-crit{color:var(--red); font-weight:800;}
   td.num{font-family:"JetBrains Mono",monospace;}
-  td.mono{font-family:"JetBrains Mono",monospace; font-weight:700; color:var(--navy);}
+  td.mono{font-family:"JetBrains Mono",monospace; font-weight:700; color:var(--navy); text-align:center;}
   td.center, th.center{text-align:center; font-variant-numeric:tabular-nums;}
   .tablewrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius-card); box-shadow:var(--shadow);}
   .tablewrap table{border-radius:var(--radius-card); overflow:hidden;}

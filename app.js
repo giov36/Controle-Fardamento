@@ -302,7 +302,7 @@
       .filter(m => !filtroUltimos30 || new Date(m.data) >= ha30dias)
       .filter(m => !globalBusca || m.colaborador.toLowerCase().includes(globalBusca) || m.item.toLowerCase().includes(globalBusca))
       .slice()
-      .sort((a, b) => numeroIdInterno(b.idInterno) - numeroIdInterno(a.idInterno));
+      .sort((a, b) => numeroIdInterno(a.idInterno) - numeroIdInterno(b.idInterno));
 
     document.getElementById('tblHistorico').innerHTML = linhas.map(m => `
       <tr>
@@ -520,7 +520,7 @@
       .filter(m => statusPagoFiltro(m, custoFiltro))
       .filter(m => !globalBusca || m.centroCusto.toLowerCase().includes(globalBusca) || m.colaborador.toLowerCase().includes(globalBusca) || m.item.toLowerCase().includes(globalBusca))
       .slice()
-      .sort((a, b) => numeroIdInterno(b.idInterno) - numeroIdInterno(a.idInterno));
+      .sort((a, b) => numeroIdInterno(a.idInterno) - numeroIdInterno(b.idInterno));
   }
 
   function renderFinanceiro(){
