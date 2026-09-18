@@ -120,18 +120,18 @@
             </div>
           </div>
 
-          <div id="camposSaida">
-            <div class="grid grid-2">
-              <div class="field">
-                <label>Colaborador (recebedor)</label>
-                <input type="text" id="txtColaborador" placeholder="Nome do colaborador" value="José da Silva">
-              </div>
-              <div class="field">
-                <label>Centro de Custo</label>
-                <input type="text" id="txtCentroCusto" placeholder="Ex: 20623" value="20623">
-              </div>
+          <div class="grid grid-2">
+            <div class="field">
+              <label>Colaborador</label>
+              <input type="text" id="txtColaborador" placeholder="Nome do colaborador" value="José da Silva">
             </div>
+            <div class="field">
+              <label>Centro de Custo</label>
+              <input type="text" id="txtCentroCusto" placeholder="Ex: 20623" value="20623">
+            </div>
+          </div>
 
+          <div id="camposSaida">
             <div class="grid grid-2">
               <div class="field">
                 <label>Solicitado por</label>
@@ -168,17 +168,17 @@
             <div class="value" id="kpiPecas">—</div>
             <div class="label">Peças em estoque</div>
           </div>
-          <div class="card kpi tone-green" id="kpiCardSaidas30">
-            <div class="value" id="kpiSaidas30">—</div>
-            <div class="label">Saídas — últimos 30 dias</div>
+          <div class="card kpi tone-red is-active" id="kpiCardSituacaoCritico" data-situacao="critico">
+            <div class="value" id="kpiSituacaoCritico">—</div>
+            <div class="label">Crítico</div>
           </div>
-          <div class="card kpi tone-red" id="kpiCardAbaixoMinimo">
-            <div class="value" id="kpiAbaixoMinimo">—</div>
-            <div class="label">Itens críticos</div>
+          <div class="card kpi tone-amber" id="kpiCardSituacaoBaixo" data-situacao="baixo">
+            <div class="value" id="kpiSituacaoBaixo">—</div>
+            <div class="label">Baixo</div>
           </div>
-          <div class="card kpi tone-amber" id="kpiCardCustoNaoLancado">
-            <div class="value" id="kpiCustoNaoLancado">—</div>
-            <div class="label">Saídas ainda não pagas</div>
+          <div class="card kpi tone-green" id="kpiCardSituacaoOk" data-situacao="ok">
+            <div class="value" id="kpiSituacaoOk">—</div>
+            <div class="label">OK</div>
           </div>
         </div>
 
@@ -188,11 +188,6 @@
             <span class="totalcount" id="totalItensCatalogo">—</span>
           </div>
           <div class="desc">Nível de estoque atual comparado ao mínimo recomendado.</div>
-          <div class="situacao-chips" id="situacaoChips">
-            <button type="button" class="situacao-chip chip-crit active" data-situacao="critico">Crítico</button>
-            <button type="button" class="situacao-chip chip-low" data-situacao="baixo">Baixo</button>
-            <button type="button" class="situacao-chip chip-ok" data-situacao="ok">OK</button>
-          </div>
           <div id="barrasEstoque"></div>
         </div>
 

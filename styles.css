@@ -154,6 +154,10 @@ img{max-width:100%}
   .kpi.tone-green .value{color:var(--green);}
   .kpi.tone-red .value{color:var(--red);}
   .kpi.tone-amber .value{color:var(--amber);}
+  .kpi[data-situacao]{border-width:2px; border-style:solid; border-color:var(--line);}
+  .kpi[data-situacao].tone-red.is-active{border-color:var(--red); background:var(--red-bg);}
+  .kpi[data-situacao].tone-amber.is-active{border-color:var(--amber); background:var(--amber-bg);}
+  .kpi[data-situacao].tone-green.is-active{border-color:var(--green); background:var(--green-bg);}
 
   .filterchip{
     display:inline-flex; align-items:center; gap:6px; background:var(--navy-soft); color:var(--accent-strong); border:none;

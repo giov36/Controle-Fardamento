@@ -188,8 +188,8 @@
       item: item.Title,
       tipo,
       quantidade: qtd,
-      colaborador: tipo === 'SAIDA' ? txtColaborador.value.trim() : '',
-      centroCusto: tipo === 'SAIDA' ? txtCentroCusto.value.trim() : '',
+      colaborador: txtColaborador.value.trim(),
+      centroCusto: txtCentroCusto.value.trim(),
       idInterno: proximoIdInterno(),
       idFinanceiro: tipo === 'SAIDA' ? '' : undefined,
       solicitadoPor: tipo === 'SAIDA' ? txtSolicitadoPor.value.trim() : '',
@@ -226,20 +226,21 @@
       .sort((a, b) => a.ratio - b.ratio);
   }
 
+  function itensPorSituacao(chave){
+    return ITENS
+      .filter(i => parseInt(i.EstoqueMinimo) > 0)
+      .map(i => ({ item: i, ...situacaoDoItem(i) }))
+      .filter(x => x.chave === chave);
+  }
+
   function renderDashboard(){
     const pecas = ITENS.reduce((acc, i) => acc + estoqueAtual(i.Title), 0);
-    const hoje = new Date();
-    const ha30dias = new Date(hoje.getTime() - 30 * 24 * 60 * 60 * 1000);
-    const saidas30 = movimentacoes
-      .filter(m => m.tipo === 'SAIDA' && new Date(m.data) >= ha30dias)
-      .reduce((acc, m) => acc + m.quantidade, 0);
     const abaixoMinimo = itensCriticos().length;
-    const custoNaoLancado = movimentacoes.filter(m => m.tipo === 'SAIDA' && !comecaComPaOuPg(m.idFinanceiro)).length;
 
     document.getElementById('kpiPecas').textContent = pecas.toLocaleString('pt-BR');
-    document.getElementById('kpiSaidas30').textContent = saidas30.toLocaleString('pt-BR');
-    document.getElementById('kpiAbaixoMinimo').textContent = abaixoMinimo;
-    document.getElementById('kpiCustoNaoLancado').textContent = custoNaoLancado;
+    document.getElementById('kpiSituacaoCritico').textContent = itensPorSituacao('critico').length;
+    document.getElementById('kpiSituacaoBaixo').textContent = itensPorSituacao('baixo').length;
+    document.getElementById('kpiSituacaoOk').textContent = itensPorSituacao('ok').length;
     document.getElementById('totalItensCatalogo').textContent = `${abaixoMinimo} itens críticos`;
 
     renderResumoEstoque();
@@ -255,10 +256,7 @@
 
   function renderResumoEstoque(){
     const chave = situacaoResumoAtual;
-    const linhas = ITENS
-      .filter(i => parseInt(i.EstoqueMinimo) > 0)
-      .map(i => ({ item: i, ...situacaoDoItem(i) }))
-      .filter(x => x.chave === chave)
+    const linhas = itensPorSituacao(chave)
       .sort((a, b) => (a.ratio ?? 0) - (b.ratio ?? 0))
       .slice(0, 8);
 
@@ -272,12 +270,12 @@
     `).join('') || `<div class="desc">${mensagem}</div>`;
   }
 
-  document.getElementById('situacaoChips').addEventListener('click', (ev) => {
-    const chip = ev.target.closest('.situacao-chip');
-    if(!chip) return;
-    situacaoResumoAtual = chip.dataset.situacao;
-    document.querySelectorAll('#situacaoChips .situacao-chip').forEach(el => el.classList.toggle('active', el === chip));
-    renderResumoEstoque();
+  document.querySelectorAll('.kpi[data-situacao]').forEach(card => {
+    card.addEventListener('click', () => {
+      situacaoResumoAtual = card.dataset.situacao;
+      document.querySelectorAll('.kpi[data-situacao]').forEach(el => el.classList.toggle('is-active', el === card));
+      renderResumoEstoque();
+    });
   });
 
   let configPref = { moeda: 'BRL', formatoData: 'DMY' };
@@ -326,33 +324,6 @@
     document.getElementById('barrasEstoque').closest('.card').scrollIntoView({behavior:'smooth', block:'start'});
   });
 
-  document.getElementById('kpiCardAbaixoMinimo').addEventListener('click', () => {
-    if(currentView !== 'dashboard') switchView('dashboard');
-    document.getElementById('ddEstoqueFrente').value = '';
-    document.getElementById('ddEstoqueSituacao').value = 'critico';
-    headerSearch.value = '';
-    globalBusca = '';
-    renderEstoqueCompleto();
-    document.getElementById('tblEstoqueCompleto').closest('.card').scrollIntoView({behavior:'smooth', block:'start'});
-  });
-
-  document.getElementById('kpiCardSaidas30').addEventListener('click', () => {
-    filtroUltimos30 = true;
-    switchView('historico');
-    document.getElementById('ddHistTipo').value = 'SAIDA';
-    document.getElementById('ddHistFrente').value = '';
-    renderHistorico();
-  });
-
-  document.getElementById('kpiCardCustoNaoLancado').addEventListener('click', () => {
-    switchView('financeiro');
-    document.getElementById('ddFinCusto').value = 'NAO';
-    document.getElementById('ddFinFrente').value = '';
-    document.getElementById('ddFinItem').value = '';
-    document.getElementById('ddFinCentro').value = '';
-    renderFinanceiro();
-    document.getElementById('tblFinanceiro').closest('.card').scrollIntoView({behavior:'smooth', block:'start'});
-  });
 
   document.querySelectorAll('.kpi').forEach(el => {
     el.setAttribute('tabindex', '0');
