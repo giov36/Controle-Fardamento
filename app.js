@@ -33,7 +33,7 @@
 
   let nextIdInternoSeq = 1;
   function proximoIdInterno(){ return 'FD' + String(nextIdInternoSeq++).padStart(2, '0'); }
-  movimentacoes.forEach(m => { if(m.tipo === 'SAIDA') m.idInterno = proximoIdInterno(); });
+  movimentacoes.forEach(m => { m.idInterno = proximoIdInterno(); });
 
   /* verde só quando o texto de verdade começa com PA ou PG (prefixo real
      do comprovante importado da planilha do financeiro) */
@@ -176,7 +176,7 @@
       quantidade: qtd,
       colaborador: tipo === 'SAIDA' ? txtColaborador.value.trim() : '',
       centroCusto: tipo === 'SAIDA' ? txtCentroCusto.value.trim() : '',
-      idInterno: tipo === 'SAIDA' ? proximoIdInterno() : undefined,
+      idInterno: proximoIdInterno(),
       idFinanceiro: tipo === 'SAIDA' ? '' : undefined,
       solicitadoPor: tipo === 'SAIDA' ? txtSolicitadoPor.value.trim() : '',
       email: tipo === 'SAIDA' ? txtEmail.value.trim() : '',
@@ -271,6 +271,7 @@
 
     document.getElementById('tblHistorico').innerHTML = linhas.map(m => `
       <tr>
+        <td class="mono">${m.idInterno || '—'}</td>
         <td>${formatarData(m.data)}</td>
         <td>${m.item}</td>
         <td><span class="pill ${m.tipo === 'ENTRADA' ? 'pill-entrada' : 'pill-saida'}">${m.tipo === 'ENTRADA' ? 'ENTRADA' : 'SAÍDA'}</span></td>
@@ -279,7 +280,7 @@
         <td>${m.centroCusto || '—'}</td>
         <td class="editcol"><button type="button" class="editbtn" onclick="abrirEdicao(${m.id})" title="Editar movimentação"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 3.5l3 3L7 16H4v-3l9.5-9.5Z"/></svg></button></td>
       </tr>
-    `).join('') || '<tr><td colspan="7" class="desc">Nenhuma movimentação para este filtro.</td></tr>';
+    `).join('') || '<tr><td colspan="8" class="desc">Nenhuma movimentação para este filtro.</td></tr>';
   }
 
   ['ddHistFrente','ddHistTipo'].forEach(id => document.getElementById(id).addEventListener('change', () => { filtroUltimos30 = false; renderHistorico(); }));
