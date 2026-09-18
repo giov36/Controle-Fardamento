@@ -258,6 +258,7 @@
     const hoje = new Date();
     const ha30dias = new Date(hoje.getTime() - 30 * 24 * 60 * 60 * 1000);
 
+    document.getElementById('thHistData').textContent = tipo === 'SAIDA' ? 'Data da Saída' : tipo === 'ENTRADA' ? 'Data da Entrada' : 'Data';
     document.getElementById('histFilterChip').style.display = filtroUltimos30 ? 'inline-flex' : 'none';
 
     const linhas = movimentacoes
