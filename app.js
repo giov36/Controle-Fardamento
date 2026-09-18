@@ -419,8 +419,8 @@
         <td>${x.item.Peca}</td>
         <td>${x.item.Genero}</td>
         <td>${x.item.Tamanho}</td>
-        <td class="num ${classeCorEstoque(x.chave)}">${x.atual}</td>
-        <td class="num">${x.min}</td>
+        <td class="center ${classeCorEstoque(x.chave)}">${x.atual}</td>
+        <td class="center">${x.min}</td>
         <td>${pillDaSituacao(x.chave)}</td>
       </tr>
     `).join('') || '<tr><td colspan="8" class="desc">Nenhum item para este filtro.</td></tr>';
