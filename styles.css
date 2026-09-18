@@ -168,6 +168,9 @@ img{max-width:100%}
   table{width:100%; border-collapse:collapse; font-size:13px; background:var(--card);}
   th, td{padding:10px 10px; text-align:center; border-bottom:1px solid var(--line);}
   th{color:var(--muted); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; font-weight:700; background:var(--navy-soft);}
+  th.sortable-th{cursor:pointer; user-select:none;}
+  th.sortable-th:hover{color:var(--accent-strong);}
+  .sort-arrow{display:inline-block; font-size:10px;}
   tr:hover td{background:var(--bg);}
   td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
   td.num-ok{color:var(--green); font-weight:800;}

@@ -90,6 +90,8 @@
   let globalBusca = '';
   let filtroUltimos30 = false;
   const situacaoHistFiltro = new Set();
+  let ordemHistIdInterno = 'desc';
+  let ordemFinIdInterno = 'desc';
 
   function situacaoDoItemPorTitulo(title){
     const item = ITENS.find(i => i.Title === title);
@@ -277,9 +279,20 @@
   }
 
   function renderResumoEstoque(){
-    const linhas = itensPorFiltroDash()
-      .sort((a, b) => (a.ratio ?? 0) - (b.ratio ?? 0))
-      .slice(0, 8);
+    let linhas;
+    if(situacaoDashFiltro.size === 0){
+      linhas = itensPorFiltroDash().sort((a, b) => (a.ratio ?? 0) - (b.ratio ?? 0)).slice(0, 8);
+    } else {
+      // com 1 ou 2 situações escolhidas, reserva um espaço pra cada uma
+      // em vez de só ordenar tudo junto por ratio — senão o crítico
+      // (ratio sempre mais baixo) engolia a lista e o baixo/ok escolhido
+      // junto nunca aparecia
+      const porGrupo = Math.floor(8 / situacaoDashFiltro.size);
+      linhas = [];
+      situacaoDashFiltro.forEach(chave => {
+        linhas = linhas.concat(itensPorSituacao(chave).sort((a, b) => (a.ratio ?? 0) - (b.ratio ?? 0)).slice(0, porGrupo));
+      });
+    }
 
     document.getElementById('barrasEstoque').innerHTML = linhas.map(x => `
       <div class="barwrap">
@@ -330,7 +343,9 @@
     const linhas = baseFiltrada
       .filter(m => situacaoHistFiltro.size === 0 || situacaoHistFiltro.has(situacaoDoItemPorTitulo(m.item)))
       .slice()
-      .sort((a, b) => numeroIdInterno(a.idInterno) - numeroIdInterno(b.idInterno));
+      .sort((a, b) => ordemHistIdInterno === 'asc'
+        ? numeroIdInterno(a.idInterno) - numeroIdInterno(b.idInterno)
+        : numeroIdInterno(b.idInterno) - numeroIdInterno(a.idInterno));
 
     document.getElementById('tblHistorico').innerHTML = linhas.map(m => `
       <tr>
@@ -358,6 +373,12 @@
       card.classList.toggle('is-active', situacaoHistFiltro.has(chave));
       renderHistorico();
     });
+  });
+
+  document.getElementById('thHistIdInterno').addEventListener('click', () => {
+    ordemHistIdInterno = ordemHistIdInterno === 'asc' ? 'desc' : 'asc';
+    document.getElementById('setaHistId').textContent = ordemHistIdInterno === 'asc' ? '▴' : '▾';
+    renderHistorico();
   });
 
   document.getElementById('kpiCardPecas').addEventListener('click', () => {
@@ -530,7 +551,9 @@
       .filter(m => statusPagoFiltro(m, custoFiltro))
       .filter(m => !globalBusca || m.centroCusto.toLowerCase().includes(globalBusca) || m.colaborador.toLowerCase().includes(globalBusca) || m.item.toLowerCase().includes(globalBusca))
       .slice()
-      .sort((a, b) => numeroIdInterno(a.idInterno) - numeroIdInterno(b.idInterno));
+      .sort((a, b) => ordemFinIdInterno === 'asc'
+        ? numeroIdInterno(a.idInterno) - numeroIdInterno(b.idInterno)
+        : numeroIdInterno(b.idInterno) - numeroIdInterno(a.idInterno));
   }
 
   let editandoFinId = null;
@@ -589,6 +612,12 @@
   document.getElementById('ddFinItem').addEventListener('change', renderFinanceiro);
   document.getElementById('ddFinCentro').addEventListener('change', renderFinanceiro);
   document.getElementById('ddFinCusto').addEventListener('change', renderFinanceiro);
+
+  document.getElementById('thFinIdInterno').addEventListener('click', () => {
+    ordemFinIdInterno = ordemFinIdInterno === 'asc' ? 'desc' : 'asc';
+    document.getElementById('setaFinId').textContent = ordemFinIdInterno === 'asc' ? '▴' : '▾';
+    renderFinanceiro();
+  });
 
   document.getElementById('tblFinanceiro').addEventListener('click', (ev) => {
     const botaoEditar = ev.target.closest('[data-fin-edit]');
