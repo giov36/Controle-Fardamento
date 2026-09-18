@@ -267,29 +267,37 @@
     return '#17875a';
   }
 
-  let situacaoResumoAtual = 'critico';
+  const situacaoDashFiltro = new Set();
+
+  function itensPorFiltroDash(){
+    const linhas = ITENS
+      .filter(i => parseInt(i.EstoqueMinimo) > 0)
+      .map(i => ({ item: i, ...situacaoDoItem(i) }));
+    return situacaoDashFiltro.size === 0 ? linhas : linhas.filter(x => situacaoDashFiltro.has(x.chave));
+  }
 
   function renderResumoEstoque(){
-    const chave = situacaoResumoAtual;
-    const linhas = itensPorSituacao(chave)
+    const linhas = itensPorFiltroDash()
       .sort((a, b) => (a.ratio ?? 0) - (b.ratio ?? 0))
       .slice(0, 8);
 
-    const mensagem = { critico: 'Nenhum item crítico agora.', baixo: 'Nenhum item baixo agora.', ok: 'Nenhum item OK no momento.' }[chave];
     document.getElementById('barrasEstoque').innerHTML = linhas.map(x => `
       <div class="barwrap">
         <div class="lbl">${x.item.Title}</div>
         <div class="bar-bg"><div class="bar-fill" style="width:${Math.max(4, Math.min(100, x.ratio * 100))}%; background:${corPorSituacao(x.chave)};"></div></div>
         <div class="num">${x.atual} / ${x.min}</div>
       </div>
-    `).join('') || `<div class="desc">${mensagem}</div>`;
+    `).join('') || `<div class="desc">Nenhum item para este filtro.</div>`;
   }
 
   document.querySelectorAll('#view-dashboard .kpi[data-situacao]').forEach(card => {
     card.addEventListener('click', () => {
-      situacaoResumoAtual = card.dataset.situacao;
-      document.querySelectorAll('#view-dashboard .kpi[data-situacao]').forEach(el => el.classList.toggle('is-active', el === card));
+      const chave = card.dataset.situacao;
+      if(situacaoDashFiltro.has(chave)) situacaoDashFiltro.delete(chave);
+      else if(situacaoDashFiltro.size < 2) situacaoDashFiltro.add(chave);
+      card.classList.toggle('is-active', situacaoDashFiltro.has(chave));
       renderResumoEstoque();
+      renderEstoqueCompleto();
     });
   });
 
@@ -442,11 +450,10 @@
 
   function renderEstoqueCompleto(){
     const frente = document.getElementById('ddEstoqueFrente').value;
-    const situacao = document.getElementById('ddEstoqueSituacao').value;
 
     let linhas = ITENS.map(i => ({ item: i, ...situacaoDoItem(i) }));
     if(frente) linhas = linhas.filter(x => x.item.Frente === frente);
-    if(situacao) linhas = linhas.filter(x => x.chave === situacao);
+    if(situacaoDashFiltro.size > 0) linhas = linhas.filter(x => situacaoDashFiltro.has(x.chave));
     if(globalBusca) linhas = linhas.filter(x => x.item.Title.toLowerCase().includes(globalBusca));
     linhas.sort((a, b) => (a.ratio ?? 99) - (b.ratio ?? 99));
 
@@ -466,7 +473,6 @@
   }
 
   document.getElementById('ddEstoqueFrente').addEventListener('change', renderEstoqueCompleto);
-  document.getElementById('ddEstoqueSituacao').addEventListener('change', renderEstoqueCompleto);
 
   function valorUnitarioDoItem(title){
     const item = ITENS.find(i => i.Title === title);
