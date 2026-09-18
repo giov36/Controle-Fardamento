@@ -109,9 +109,10 @@
   }
 
   function estoqueAtual(itemTitle){
-    return movimentacoes
+    const saldo = movimentacoes
       .filter(m => m.item === itemTitle)
       .reduce((acc, m) => acc + (m.tipo === 'ENTRADA' ? m.quantidade : -m.quantidade), 0);
+    return Math.max(0, saldo);
   }
 
   function refreshItemOptions(){
@@ -421,7 +422,7 @@
     if(min === 0) return { chave:'semminimo', atual, min, ratio:null };
     const ratio = atual / min;
     if(ratio < 0.5) return { chave:'critico', atual, min, ratio };
-    if(ratio < 1) return { chave:'baixo', atual, min, ratio };
+    if(ratio === 0.5) return { chave:'baixo', atual, min, ratio };
     return { chave:'ok', atual, min, ratio };
   }
 
