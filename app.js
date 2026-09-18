@@ -533,8 +533,9 @@
           <td>${m.centroCusto}</td>
           <td class="center">${m.quantidade}</td>
           <td class="${pago ? 'fin-id-pago' : ''}"><input type="text" class="fin-id-input" data-fin-id="${m.id}" value="${(m.idFinanceiro || '').replace(/"/g, '&quot;')}" placeholder="—"></td>
+          <td class="center">${pago ? '<span class="pill pill-sim">SIM</span>' : '<span class="pill pill-nao">NÃO</span>'}</td>
         </tr>`;
-    }).join('') || '<tr><td colspan="8" class="desc">Nenhuma saída com centro de custo para este filtro.</td></tr>';
+    }).join('') || '<tr><td colspan="9" class="desc">Nenhuma saída com centro de custo para este filtro.</td></tr>';
 
     const todasSaidasComCentro = movimentacoes.filter(m => m.tipo === 'SAIDA' && m.centroCusto);
     const totalTodas = todasSaidasComCentro.reduce((acc, m) => acc + m.quantidade * valorUnitarioDoItem(m.item), 0);
@@ -614,7 +615,7 @@
 
   function exportarExcelFinanceiro(){
     const saidas = saidasFiltradas();
-    const colunas = ['ID Interno', 'Data', 'Tipo de Produto', 'Fardamento', 'Colaborador', 'Centro de Custo', 'Quantidade', 'ID Financeiro'];
+    const colunas = ['ID Interno', 'Data', 'Tipo de Produto', 'Fardamento', 'Colaborador', 'Centro de Custo', 'Quantidade', 'ID Financeiro', 'Lançado'];
     const linhas = saidas.map(m => [
       m.idInterno || '—',
       formatarData(m.data),
@@ -623,7 +624,8 @@
       m.colaborador || '—',
       m.centroCusto,
       m.quantidade,
-      m.idFinanceiro || '—'
+      m.idFinanceiro || '—',
+      comecaComPaOuPg(m.idFinanceiro) ? 'SIM' : 'NÃO'
     ]);
 
     const meta = `Gerado em ${formatarDataHoraAgora()} · Controle de Fardamento · Prestação de contas das saídas`;
