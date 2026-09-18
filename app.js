@@ -9,6 +9,14 @@
   };
   ITENS.forEach(i => { i.ValorUnitario = PRECOS_POR_PECA[i.Peca] || 0; });
 
+  const MINIMOS_POR_FRENTE = {
+    'ESCRITÓRIO': 30,
+    'CAMPO': 60,
+    'RF': 60,
+    'CHAPÉU AUSTRALIANO': 30
+  };
+  ITENS.forEach(i => { i.EstoqueMinimo = String(MINIMOS_POR_FRENTE[i.Frente] ?? i.EstoqueMinimo); });
+
   let movimentacoes = [
     {data:"2026-01-10", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Manga Longa Masculina M", tipo:"ENTRADA", quantidade:30, colaborador:"", centroCusto:"", solicitadoPor:"", email:"", observacao:""},
     {data:"2026-02-05", frente:"ESCRITÓRIO", item:"[ESCRITÓRIO] Manga Longa Masculina M", tipo:"SAIDA", quantidade:22, colaborador:"Rafael Gomes", centroCusto:"30825", idFinanceiro:"", solicitadoPor:"Rafael Gomes", email:"rafael.gomes@tpfe.com.br", observacao:""},
