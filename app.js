@@ -540,13 +540,7 @@
     if(editandoFinId === m.id){
       return `<td class="${pago ? 'fin-id-pago' : ''}"><input type="text" class="fin-id-input" data-fin-id="${m.id}" value="${(m.idFinanceiro || '').replace(/"/g, '&quot;')}" placeholder="—" autofocus></td>`;
     }
-    return `
-      <td class="${pago ? 'fin-id-pago' : ''}">
-        <div class="fin-id-view">
-          <span class="fin-id-text">${escapeHtml(m.idFinanceiro) || '—'}</span>
-          <button type="button" class="editbtn" data-fin-edit="${m.id}" title="Editar ID Financeiro"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 3.5l3 3L7 16H4v-3l9.5-9.5Z"/></svg></button>
-        </div>
-      </td>`;
+    return `<td class="${pago ? 'fin-id-pago' : ''}"><span class="fin-id-text">${escapeHtml(m.idFinanceiro) || '—'}</span></td>`;
   }
 
   function escapeHtml(texto){
@@ -572,8 +566,9 @@
           <td class="center">${m.quantidade}</td>
           ${celulaIdFinanceiro(m)}
           <td class="center">${pago ? '<span class="pill pill-sim">SIM</span>' : '<span class="pill pill-nao">NÃO</span>'}</td>
+          <td class="editcol"><button type="button" class="editbtn" data-fin-edit="${m.id}" title="Editar ID Financeiro"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 3.5l3 3L7 16H4v-3l9.5-9.5Z"/></svg></button></td>
         </tr>`;
-    }).join('') || '<tr><td colspan="9" class="desc">Nenhuma saída com centro de custo para este filtro.</td></tr>';
+    }).join('') || '<tr><td colspan="10" class="desc">Nenhuma saída com centro de custo para este filtro.</td></tr>';
 
     if(editandoFinId !== null){
       const input = document.querySelector(`.fin-id-input[data-fin-id="${editandoFinId}"]`);
