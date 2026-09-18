@@ -392,6 +392,13 @@
     return '<span class="pill pill-neutral">SEM MÍNIMO</span>';
   }
 
+  function classeCorEstoque(chave){
+    if(chave === 'critico') return 'num-crit';
+    if(chave === 'baixo') return 'num-low';
+    if(chave === 'ok') return 'num-ok';
+    return '';
+  }
+
   function renderEstoqueCompleto(){
     const frente = document.getElementById('ddEstoqueFrente').value;
     const situacao = document.getElementById('ddEstoqueSituacao').value;
@@ -410,7 +417,7 @@
         <td>${x.item.Peca}</td>
         <td>${x.item.Genero}</td>
         <td>${x.item.Tamanho}</td>
-        <td class="num">${x.atual}</td>
+        <td class="num ${classeCorEstoque(x.chave)}">${x.atual}</td>
         <td class="num">${x.min}</td>
         <td>${pillDaSituacao(x.chave)}</td>
       </tr>
